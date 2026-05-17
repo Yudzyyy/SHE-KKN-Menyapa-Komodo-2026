@@ -1,65 +1,577 @@
-import Image from "next/image";
+"use client";
+
+import React, { useState, useEffect } from 'react';
+import Link from 'next/link';
+import { supabase } from '@/utils/supabaseClient';
 
 export default function Home() {
+  // App States
+  const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
+  const [showProfileDropdown, setShowProfileDropdown] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [isLoading, setIsLoading] = useState(true);
+
+  // Toast Notification state
+  const [toast, setToast] = useState(null);
+
+  // Dynamic Dashboard Stats
+  const [stats, setStats] = useState({
+    totalMembers: 30,
+    totalHealthy: 30,
+    totalSick: 0,
+    totalInjury: 0,
+    warlokaCount: 15,
+    goloMoriCount: 15,
+    recentIncidents: [
+      { id: "INC-4492", reporter: "Budi Darmawan", location: "Gudang Penyimpanan Sektor A", type: "Terpeleset Ringan", status: "Terselesaikan", severity: "medium" },
+      { id: "INC-4490", reporter: "Siti Nurbaya", location: "Pembangkit Listrik Sektor 2", type: "Kelelahan Panas", status: "Dalam Proses", severity: "emergency" },
+      { id: "INC-4488", reporter: "Rudi Khoirul", location: "Pintu Gerbang Utama Masuk", type: "Hampir Celaka", status: "Investigasi", severity: "low" }
+    ]
+  });
+
+  // Fetch all stats dynamically from Supabase
+  useEffect(() => {
+    const fetchDashboardData = async () => {
+      setIsLoading(true);
+      try {
+        // 1. Fetch Anggota stats
+        const { data: members, error: mErr } = await supabase
+          .from('anggota')
+          .select('*');
+
+        // 2. Fetch Insiden stats
+        const { data: incidents, error: iErr } = await supabase
+          .from('insiden')
+          .select('*')
+          .order('tanggal', { ascending: false });
+
+        let totalMembers = 30;
+        let totalHealthy = 30;
+        let totalSick = 0;
+        let totalInjury = 0;
+        let warlokaCount = 15;
+        let goloMoriCount = 15;
+        let recentIncidents = stats.recentIncidents;
+
+        if (members && members.length > 0) {
+          totalMembers = members.length;
+          
+          // Count by posko
+          warlokaCount = members.filter(m => (m.posko || m.village) === "Warloka Pesisir").length;
+          goloMoriCount = members.filter(m => (m.posko || m.village) === "Golo Mori").length;
+
+          // Count by kondisi
+          totalHealthy = members.filter(m => m.kondisi === "Sehat" || m.kondisi === "Fit").length;
+          totalSick = members.filter(m => m.kondisi === "Sakit" || m.kondisi === "Kurang Sehat").length;
+          totalInjury = members.filter(m => m.kondisi === "Cedera" || m.kondisi === "Luka" || m.kondisi === "Cedera Ringan").length;
+        }
+
+        if (incidents && incidents.length > 0) {
+          recentIncidents = incidents.slice(0, 3).map((inc, i) => {
+            const sequentialNumber = incidents.length - i;
+            
+            let extra = {};
+            try {
+              extra = JSON.parse(inc.tindakan);
+            } catch (e) {
+              const isKorban = inc.tindakan && inc.tindakan.startsWith("Korban: ");
+              extra = {
+                victimName: isKorban ? inc.tindakan.split(" | ")[0].replace("Korban: ", "") : "Tidak ada",
+                photo: null
+              };
+            }
+
+            return {
+              id: `#${sequentialNumber}`,
+              reporter: inc.nama,
+              location: inc.lokasi || "Posko KKN",
+              type: inc.tipe === "emergency" ? "Darurat Medis" : (inc.tipe === "high" ? "Insiden Tinggi" : (inc.tipe === "medium" ? "Insiden Sedang" : "Insiden Ringan")),
+              status: inc.status || "Ditangani",
+              severity: inc.tipe,
+              victimName: extra.victimName || "Tidak ada",
+              description: inc.deskripsi || "Tidak ada catatan.",
+              photo: extra.photo || null
+            };
+          });
+        }
+
+        setStats({
+          totalMembers,
+          totalHealthy,
+          totalSick,
+          totalInjury,
+          warlokaCount,
+          goloMoriCount,
+          recentIncidents
+        });
+
+      } catch (err) {
+        console.error("Gagal mengambil data dashboard:", err);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchDashboardData();
+  }, []);
+
+  const triggerToast = (message, type = "success") => {
+    setToast({ message, type });
+    setTimeout(() => setToast(null), 3000);
+  };
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
+    <div className="bg-[#f8fafc] text-slate-800 min-h-screen antialiased flex font-sans selection:bg-emerald-500 selection:text-white">
+      {/* Toast Notification */}
+      {toast && (
+        <div className="fixed top-6 right-6 z-[9999] flex items-center gap-3 bg-white px-5 py-4 rounded-xl shadow-[0_10px_30px_rgba(0,0,0,0.08)] border-l-4 border-emerald-500 animate-slide-in">
+          <div className={`w-8 h-8 rounded-full flex items-center justify-center text-white ${
+            toast.type === "success" ? "bg-emerald-500" : "bg-sky-500"
+          }`}>
+            <span className="material-symbols-outlined text-base">check</span>
+          </div>
+          <div>
+            <p className="font-semibold text-sm text-slate-900">{toast.message}</p>
+          </div>
+        </div>
+      )}
+
+      {/* Backdrop Overlay for mobile sidebar */}
+      {isMobileSidebarOpen && (
+        <div 
+          onClick={() => setIsMobileSidebarOpen(false)} 
+          className="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-40 lg:hidden"
         />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.js file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+      )}
+
+      {/* 1. SIDEBAR - Responsive drawer style */}
+      <aside className={`fixed left-0 top-0 h-full w-[260px] z-50 bg-white shadow-[0_8px_30px_rgb(0,0,0,0.02)] flex flex-col py-8 px-4 border-r border-slate-100 transition-transform duration-300 lg:translate-x-0 ${
+        isMobileSidebarOpen ? "translate-x-0" : "-translate-x-full"
+      }`}>
+        
+        {/* Mobile Close Button inside sidebar */}
+        <button 
+          onClick={() => setIsMobileSidebarOpen(false)}
+          className="lg:hidden absolute top-5 right-5 text-slate-400 hover:text-slate-700 hover:bg-slate-100 rounded-xl p-1.5 transition-all"
+        >
+          <span className="material-symbols-outlined text-xl">close</span>
+        </button>
+
+        {/* Brand / Logo */}
+        <div className="px-3 mb-10">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-2xl bg-gradient-to-br from-emerald-400 to-teal-500 flex items-center justify-center text-white font-extrabold text-xl shadow-lg shadow-emerald-500/20">
+              S
+            </div>
+            <div>
+              <h1 className="font-bold text-[15px] text-slate-900 leading-tight tracking-wide font-poppins">SHE Monitoring</h1>
+              <p className="text-[10px] text-emerald-600 font-semibold tracking-normal mt-0.5 leading-snug">KKN PPM UGM Menyapa Komodo 2026</p>
+            </div>
+          </div>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+
+        {/* Navigation Menus - "Dashboard" is highlighted */}
+        <nav className="flex-1 flex flex-col gap-2 overflow-y-auto">
+          <Link 
+            className="bg-emerald-50/80 text-emerald-700 font-bold rounded-xl pl-3.5 pr-4 py-3 flex items-center gap-3.5 border-l-4 border-emerald-500 transition-all text-[14px]" 
+            href="/"
           >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+            <span className="material-symbols-outlined text-xl text-emerald-600" style={{ fontVariationSettings: '"FILL" 1' }}>dashboard</span>
+            <span>Dashboard</span>
+          </Link>
+          
+          <Link 
+            className="group text-slate-500 hover:text-emerald-600 hover:bg-emerald-50/30 rounded-xl px-4 py-3 flex items-center gap-3.5 transition-all duration-200 font-semibold text-[14px]" 
+            href="/anggota"
           >
-            Documentation
-          </a>
-        </div>
-      </main>
+            <span className="material-symbols-outlined text-xl text-slate-400 group-hover:text-emerald-500 transition-colors">group</span>
+            <span>Anggota</span>
+          </Link>
+
+          <Link 
+            className="group text-slate-500 hover:text-emerald-600 hover:bg-emerald-50/30 rounded-xl px-4 py-3 flex items-center gap-3.5 transition-all duration-200 font-semibold text-[14px]" 
+            href="/aktivitas"
+          >
+            <span className="material-symbols-outlined text-xl text-slate-400 group-hover:text-emerald-500 transition-colors">task_alt</span>
+            <span>Aktivitas Harian</span>
+          </Link>
+
+          <Link 
+            className="group text-slate-500 hover:text-emerald-600 hover:bg-emerald-50/30 rounded-xl px-4 py-3 flex items-center gap-3.5 transition-all duration-200 font-semibold text-[14px]" 
+            href="/insiden"
+          >
+            <span className="material-symbols-outlined text-xl text-slate-400 group-hover:text-emerald-500 transition-colors">report_problem</span>
+            <span>Insiden</span>
+          </Link>
+
+          <Link 
+            className="group text-slate-500 hover:text-emerald-600 hover:bg-emerald-50/30 rounded-xl px-4 py-3 flex items-center gap-3.5 transition-all duration-200 font-semibold text-[14px]" 
+            href="/emergency"
+          >
+            <span className="material-symbols-outlined text-xl text-slate-400 group-hover:text-emerald-500 transition-colors">contact_phone</span>
+            <span>Emergency Contact</span>
+          </Link>
+        </nav>
+
+      </aside>
+
+      {/* Main Content Wrapper - Responsive margin left */}
+      <div className="lg:ml-[260px] flex-1 flex flex-col min-h-screen relative overflow-x-hidden w-full">
+        {/* Subtle decorative background gradient */}
+        <div className="absolute top-0 left-0 right-0 h-64 bg-gradient-to-b from-emerald-50/60 via-slate-50/30 to-transparent -z-10" />
+
+        {/* 2. TOPBAR - Responsive margins & Hamburger button */}
+        <header className="sticky top-0 w-full z-30 border-b border-slate-100 bg-white/70 backdrop-blur-md shadow-sm flex justify-between items-center h-20 px-4 lg:px-8">
+          <div className="flex items-center gap-3">
+            {/* Mobile Hamburger toggle button */}
+            <button 
+              onClick={() => setIsMobileSidebarOpen(true)}
+              className="lg:hidden text-slate-500 hover:text-emerald-600 hover:bg-slate-50 p-2.5 rounded-xl transition-all border border-slate-100 mr-1"
+            >
+              <span className="material-symbols-outlined text-xl leading-none">menu</span>
+            </button>
+
+            <h2 className="font-poppins font-bold text-lg lg:text-xl text-slate-800 hidden sm:block">SHE Dashboard</h2>
+            
+            {/* Search Bar */}
+            <div className="relative">
+              <span className="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-base">search</span>
+              <input 
+                className="pl-10 pr-4 py-2 bg-slate-50 border border-slate-200 rounded-full text-xs font-medium focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 focus:bg-white transition-all text-slate-800 w-44 sm:w-60 md:w-80 shadow-inner" 
+                placeholder="Cari analitik..." 
+                type="text" 
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+              />
+              {searchQuery && (
+                <button 
+                  onClick={() => setSearchQuery("")}
+                  className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
+                >
+                  <span className="material-symbols-outlined text-base">close</span>
+                </button>
+              )}
+            </div>
+          </div>
+
+          <div className="flex items-center gap-5">
+            {/* Notification bell */}
+            <button className="text-slate-500 hover:text-emerald-600 hover:bg-slate-50 transition-all rounded-full p-2.5 relative border border-slate-100">
+              <span className="material-symbols-outlined text-xl">notifications</span>
+              <span className="absolute top-2 right-2 w-2 h-2 bg-rose-500 rounded-full ring-2 ring-white"></span>
+            </button>
+            
+            {/* Avatar Admin with interactive Dropdown */}
+            <div className="relative">
+              <button 
+                onClick={() => setShowProfileDropdown(!showProfileDropdown)}
+                className="flex items-center gap-2.5 p-1.5 rounded-full hover:bg-slate-50 border border-slate-100 transition-all focus:outline-none"
+              >
+                <div className="w-9 h-9 rounded-full overflow-hidden border border-emerald-500/30">
+                  <img 
+                    alt="Admin Profile" 
+                    className="w-full h-full object-cover" 
+                    src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=120" 
+                  />
+                </div>
+                <span className="font-semibold text-xs text-slate-700 pr-2 hidden md:block">Adelia Siregar</span>
+                <span className="material-symbols-outlined text-slate-400 text-sm hidden md:block">keyboard_arrow_down</span>
+              </button>
+
+              {showProfileDropdown && (
+                <div className="absolute right-0 mt-3 w-52 bg-white rounded-xl shadow-[0_10px_40px_rgba(0,0,0,0.12)] border border-slate-100 py-2.5 z-50 animate-fade-in">
+                  <div className="px-4.5 py-2.5 border-b border-slate-50 mb-1.5">
+                    <p className="font-bold text-sm text-slate-800">Adelia Siregar</p>
+                    <p className="text-[11px] text-slate-400">Koordinator SHE Lapangan</p>
+                  </div>
+                  <a href="#" className="flex items-center gap-2.5 px-4.5 py-2 text-xs text-slate-600 hover:bg-emerald-50 hover:text-emerald-700 transition-colors">
+                    <span className="material-symbols-outlined text-base">person</span> Profil Saya
+                  </a>
+                  <a href="#" className="flex items-center gap-2.5 px-4.5 py-2 text-xs text-slate-600 hover:bg-emerald-50 hover:text-emerald-700 transition-colors">
+                    <span className="material-symbols-outlined text-base">security</span> Kebijakan Privasi
+                  </a>
+                  <hr className="my-1.5 border-slate-100" />
+                  <a href="#" className="flex items-center gap-2.5 px-4.5 py-2 text-xs text-rose-600 hover:bg-rose-50 transition-colors">
+                    <span className="material-symbols-outlined text-base">logout</span> Logout
+                  </a>
+                </div>
+              )}
+            </div>
+          </div>
+        </header>
+
+        {/* 3. WORKSPACE CANVAS */}
+        <main className="flex-1 p-8 flex flex-col gap-8 max-w-7xl w-full mx-auto">
+          
+          {/* Header Dashboard Welcome */}
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div>
+              <div className="flex items-center gap-2 text-[12px] text-emerald-600 font-semibold mb-1">
+                <span>SHE Monitor</span>
+                <span className="material-symbols-outlined text-xs">chevron_right</span>
+                <span className="text-slate-400">Overview</span>
+              </div>
+              <h1 className="font-poppins font-extrabold text-2xl md:text-3xl text-slate-900 tracking-tight">
+                Welcome back, Admin
+              </h1>
+              <p className="text-sm text-slate-500 mt-1 font-medium">
+                Senin, 24 Mei 2026 • Semua sistem pemantauan keselamatan berjalan optimal.
+              </p>
+            </div>
+
+            <button 
+              onClick={() => triggerToast("Laporan berhasil dibuat!", "success")}
+              className="flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-emerald-500 to-emerald-600 text-white rounded-xl font-semibold text-sm hover:from-emerald-600 hover:to-emerald-700 shadow-md shadow-emerald-500/10 hover:shadow-emerald-500/25 hover:-translate-y-0.5 active:translate-y-0 transition-all duration-300 shrink-0 self-start sm:self-auto"
+            >
+              <span className="material-symbols-outlined text-base">analytics</span>
+              Generate Report
+            </button>
+          </div>          {/* 4. STATISTIC CARDS - Redesigned white cards with emerald style */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            
+            {/* Card 1: Total Anggota */}
+            <div className="bg-white rounded-2xl p-6 shadow-[0_4px_20px_rgba(0,0,0,0.02)] border border-slate-100 hover:shadow-md hover:-translate-y-0.5 transition-all duration-300 flex justify-between items-center group">
+              <div>
+                <p className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Total Anggota</p>
+                <h2 className="text-3xl font-extrabold text-slate-800 font-poppins leading-tight">{stats.totalMembers}</h2>
+                <p className="text-[10px] text-emerald-600 font-semibold mt-1 flex items-center gap-0.5">
+                  <span className="material-symbols-outlined text-xs">group</span> Terbagi di 2 Posko Desa
+                </p>
+              </div>
+              <div className="w-12 h-12 bg-emerald-50 text-emerald-600 group-hover:bg-emerald-500 group-hover:text-white rounded-2xl flex items-center justify-center border border-emerald-100/50 shadow-inner transition-colors duration-300">
+                <span className="material-symbols-outlined text-xl">group</span>
+              </div>
+            </div>
+
+            {/* Card 2: Total Sehat */}
+            <div className="bg-white rounded-2xl p-6 shadow-[0_4px_20px_rgba(0,0,0,0.02)] border border-slate-100 hover:shadow-md hover:-translate-y-0.5 transition-all duration-300 flex justify-between items-center group">
+              <div>
+                <p className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Total Sehat</p>
+                <h2 className="text-3xl font-extrabold text-emerald-600 font-poppins leading-tight">{stats.totalHealthy}</h2>
+                <p className="text-[10px] text-emerald-600 font-semibold mt-1 flex items-center gap-0.5">
+                  <span className="material-symbols-outlined text-xs">verified</span> {stats.totalMembers > 0 ? Math.round((stats.totalHealthy / stats.totalMembers) * 100) : 100}% Anggota Fit
+                </p>
+              </div>
+              <div className="w-12 h-12 bg-emerald-50 text-emerald-600 group-hover:bg-emerald-500 group-hover:text-white rounded-2xl flex items-center justify-center border border-emerald-100/50 shadow-inner transition-colors duration-300">
+                <span className="material-symbols-outlined text-xl">favorite</span>
+              </div>
+            </div>
+
+            {/* Card 3: Total Sakit */}
+            <div className="bg-white rounded-2xl p-6 shadow-[0_4px_20px_rgba(0,0,0,0.02)] border border-slate-100 hover:shadow-md hover:-translate-y-0.5 transition-all duration-300 flex justify-between items-center group">
+              <div>
+                <p className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Total Sakit</p>
+                <h2 className="text-3xl font-extrabold text-slate-500 font-poppins leading-tight">{stats.totalSick}</h2>
+                <p className="text-[10px] text-slate-500 font-semibold mt-1 flex items-center gap-0.5">
+                  <span className="material-symbols-outlined text-xs">info</span> {stats.totalSick > 0 ? "Butuh Istirahat/Perawatan" : "Semua dalam kondisi sehat"}
+                </p>
+              </div>
+              <div className="w-12 h-12 bg-slate-50 text-slate-400 group-hover:bg-slate-500 group-hover:text-white rounded-2xl flex items-center justify-center border border-slate-100/50 shadow-inner transition-colors duration-300">
+                <span className="material-symbols-outlined text-xl">sick</span>
+              </div>
+            </div>
+
+            {/* Card 4: Total Injury */}
+            <div className="bg-white rounded-2xl p-6 shadow-[0_4px_20px_rgba(0,0,0,0.02)] border border-slate-100 hover:shadow-md hover:-translate-y-0.5 transition-all duration-300 flex justify-between items-center group">
+              <div>
+                <p className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Total Injury</p>
+                <h2 className="text-3xl font-extrabold text-slate-500 font-poppins leading-tight">{stats.totalInjury}</h2>
+                <p className="text-[10px] text-slate-500 font-semibold mt-1 flex items-center gap-0.5">
+                  <span className="material-symbols-outlined text-xs">emergency</span> {stats.totalInjury > 0 ? `${stats.totalInjury} Penanganan Medis` : "Zero accident dilaporkan"}
+                </p>
+              </div>
+              <div className="w-12 h-12 bg-slate-50 text-slate-400 group-hover:bg-slate-500 group-hover:text-white rounded-2xl flex items-center justify-center border border-slate-100/50 shadow-inner transition-colors duration-300">
+                <span className="material-symbols-outlined text-xl">warning</span>
+              </div>
+            </div>
+
+          </div>
+
+          {/* 5. MIDDLE SECTION - Progress, Site Metrics & Quick Action */}
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+
+            {/* Health Distribution Circular Progress Chart */}
+            <div className="lg:col-span-2 bg-white rounded-3xl p-8 shadow-[0_4px_25px_rgba(0,0,0,0.02)] border border-slate-100 hover:shadow-md transition-shadow duration-300 flex flex-col">
+              <div className="flex justify-between items-start mb-6">
+                <div>
+                  <h3 className="text-lg font-poppins font-bold text-slate-900">Distribusi Kesehatan</h3>
+                  <p className="text-xs text-slate-400 font-medium mt-0.5">Analisis kondisi kesiapan kerja personil di lapangan.</p>
+                </div>
+                <button className="bg-slate-50 border border-slate-200 text-xs font-bold px-3 py-1.5 rounded-xl hover:bg-slate-100 transition-colors text-slate-600">
+                  7 Hari Terakhir
+                </button>
+              </div>
+
+              <div className="flex flex-col md:flex-row gap-10 items-center justify-around flex-1 py-4">
+                {/* Circular Gauge */}
+                <div className="relative w-48 h-48 rounded-full border-[16px] border-slate-50 flex items-center justify-center shadow-inner shrink-0">
+                  {/* Decorative green ring fill */}
+                  <div className="absolute inset-[-16px] rounded-full border-[16px] border-emerald-500 border-b-transparent border-l-transparent rotate-45" />
+                  <div className="text-center relative z-10">
+                    <h4 className="text-4xl font-extrabold text-slate-800 font-poppins">
+                      {stats.totalMembers > 0 ? Math.round((stats.totalHealthy / stats.totalMembers) * 100) : 100}%
+                    </h4>
+                    <p className="text-[11px] text-emerald-600 font-bold uppercase tracking-wider mt-1.5">Overall Fit</p>
+                  </div>
+                </div>
+
+                {/* Progress bars indicator lists */}
+                <div className="space-y-4.5 flex-1 w-full max-w-sm">
+                  <div>
+                    <div className="flex justify-between text-xs font-bold text-slate-700 mb-1.5">
+                      <span>Layak Bekerja (Fit for Work)</span>
+                      <span className="text-emerald-600">{stats.totalHealthy} <span className="text-[10px] text-slate-400 font-medium">({stats.totalMembers > 0 ? Math.round((stats.totalHealthy / stats.totalMembers) * 100) : 100}%)</span></span>
+                    </div>
+                    <div className="w-full bg-slate-50 border border-slate-100 rounded-full h-3 overflow-hidden">
+                      <div 
+                        className="bg-gradient-to-r from-emerald-400 to-emerald-500 h-2.5 rounded-full" 
+                        style={{ width: `${stats.totalMembers > 0 ? (stats.totalHealthy / stats.totalMembers) * 100 : 100}%` }}
+                      />
+                    </div>
+                  </div>
+
+                  <div>
+                    <div className="flex justify-between text-xs font-bold text-slate-700 mb-1.5">
+                      <span>Kondisi Kurang Sehat (Sick)</span>
+                      <span className="text-slate-500">{stats.totalSick} <span className="text-[10px] text-slate-400 font-medium">({stats.totalMembers > 0 ? Math.round((stats.totalSick / stats.totalMembers) * 100) : 0}%)</span></span>
+                    </div>
+                    <div className="w-full bg-slate-50 border border-slate-100 rounded-full h-3 overflow-hidden">
+                      <div 
+                        className="bg-amber-400 h-2.5 rounded-full" 
+                        style={{ width: `${stats.totalMembers > 0 ? (stats.totalSick / stats.totalMembers) * 100 : 0}%` }}
+                      />
+                    </div>
+                  </div>
+
+                  <div>
+                    <div className="flex justify-between text-xs font-bold text-slate-700 mb-1.5">
+                      <span>Perawatan Medis (Injury)</span>
+                      <span className="text-slate-500">{stats.totalInjury} <span className="text-[10px] text-slate-400 font-medium">({stats.totalMembers > 0 ? Math.round((stats.totalInjury / stats.totalMembers) * 100) : 0}%)</span></span>
+                    </div>
+                    <div className="w-full bg-slate-50 border border-slate-100 rounded-full h-3 overflow-hidden">
+                      <div 
+                        className="bg-rose-500 h-2.5 rounded-full" 
+                        style={{ width: `${stats.totalMembers > 0 ? (stats.totalInjury / stats.totalMembers) * 100 : 0}%` }}
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Site Metrics & Quick Action */}
+            <div className="flex flex-col h-full">
+              
+              {/* Site Metrics Card */}
+              <div className="bg-white rounded-3xl p-6 shadow-[0_4px_25px_rgba(0,0,0,0.02)] border border-slate-100 hover:shadow-md transition-shadow duration-300 flex-1 flex flex-col justify-between">
+                <h3 className="text-base font-poppins font-bold text-slate-900 mb-4 flex items-center gap-2">
+                  <span className="material-symbols-outlined text-emerald-600 text-lg">domain</span>
+                  Kondisi Posko Desa KKN
+                </h3>
+
+                <div className="flex-1 flex flex-col justify-center gap-3.5">
+                  <div className="bg-emerald-50/50 border border-emerald-100/50 rounded-xl p-3.5 hover:shadow-sm transition-shadow">
+                    <h4 className="font-bold text-xs text-emerald-800 leading-tight">Posko Warloka Pesisir</h4>
+                    <p className="text-[11px] text-emerald-600 mt-1 font-medium">{stats.warlokaCount} Anggota Aktif • Aman & Sehat.</p>
+                  </div>
+
+                  <div className="bg-emerald-50/50 border border-emerald-100/50 rounded-xl p-3.5 hover:shadow-sm transition-shadow">
+                    <h4 className="font-bold text-xs text-emerald-800 leading-tight">Posko Golo Mori</h4>
+                    <p className="text-[11px] text-emerald-600 mt-1 font-medium">{stats.goloMoriCount} Anggota Aktif • Aman & Sehat.</p>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
+          </div>
+
+          {/* 6. TABLE - Recent Incidents Redesigned */}
+          <div className="bg-white rounded-3xl shadow-[0_4px_25px_rgba(0,0,0,0.03)] border border-slate-100 overflow-hidden flex flex-col">
+            
+            <div className="px-8 py-6.5 flex justify-between items-center border-b border-slate-50">
+              <div>
+                <h3 className="text-lg font-poppins font-bold text-slate-900">Laporan Insiden Terbaru</h3>
+                <p className="text-xs text-slate-400 font-medium mt-0.5">Pemantauan kasus keselamatan lapangan terkini.</p>
+              </div>
+
+              <Link 
+                href="/insiden" 
+                className="text-xs font-bold text-emerald-600 hover:text-emerald-700 flex items-center gap-1 hover:underline"
+              >
+                Lihat Semua Laporan
+                <span className="material-symbols-outlined text-xs leading-none">arrow_forward</span>
+              </Link>
+            </div>
+
+            <div className="overflow-x-auto">
+              <table className="w-full text-left border-collapse">
+                <thead>
+                  <tr className="bg-slate-50/80 border-b border-slate-100/80 text-[11px] font-bold text-slate-400 uppercase tracking-wider">
+                    <th className="pl-8 pr-4 py-4 w-32">INCIDENT ID</th>
+                    <th className="px-5 py-4">Nama Pelapor</th>
+                    <th className="px-5 py-4">Anggota Terkena</th>
+                    <th className="px-5 py-4 w-40">Tingkat Keparahan</th>
+                    <th className="px-5 py-4 max-w-xs">Catatan & Kronologi</th>
+                    <th className="pl-4 pr-8 py-4 text-center w-36">Foto Insiden</th>
+                  </tr>
+                </thead>
+
+                <tbody className="divide-y divide-slate-50 text-slate-700">
+                  {stats.recentIncidents.map((inc, index) => (
+                    <tr key={index} className="hover:bg-slate-50/40 transition-colors duration-200">
+                      <td className="pl-8 pr-4 py-5 font-poppins font-bold text-xs text-slate-800">{inc.id}</td>
+                      <td className="px-5 py-5 text-xs">
+                        <div className="flex items-center gap-2">
+                          <span className="material-symbols-outlined text-slate-400 text-base leading-none">person</span>
+                          <span className="font-semibold text-slate-900">{inc.reporter}</span>
+                        </div>
+                      </td>
+                      <td className="px-5 py-5 text-xs">
+                        <div className="flex items-center gap-2">
+                          <span className="material-symbols-outlined text-slate-400 text-base leading-none">medical_services</span>
+                          <span className="font-semibold text-rose-600">{inc.victimName}</span>
+                        </div>
+                      </td>
+                      <td className="px-5 py-5">
+                        <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-[9px] font-bold ${
+                          inc.severity === "emergency" ? "bg-rose-50 text-rose-700 border border-rose-150 animate-pulse" :
+                          inc.severity === "high" ? "bg-rose-50 text-rose-600 border border-rose-100" :
+                          inc.severity === "medium" ? "bg-amber-50 text-amber-700 border border-amber-100" :
+                          "bg-emerald-50 text-emerald-700 border border-emerald-100"
+                        }`}>
+                          {inc.type}
+                        </span>
+                      </td>
+                      <td className="px-5 py-5 text-xs text-slate-500 max-w-xs truncate" title={inc.description}>
+                        {inc.description}
+                      </td>
+                      <td className="pl-4 pr-8 py-5 text-center">
+                        {inc.photo ? (
+                          <div className="inline-block relative group">
+                            <img 
+                              src={inc.photo} 
+                              alt="Foto Insiden" 
+                              className="w-14 h-10 object-cover rounded-lg border border-slate-200 shadow-sm transition-transform duration-200 hover:scale-150 z-10 cursor-zoom-in" 
+                            />
+                          </div>
+                        ) : (
+                          <span className="text-[10px] text-slate-400 font-medium italic flex items-center justify-center gap-1">
+                            <span className="material-symbols-outlined text-[13px] leading-none">no_photography</span>
+                            Tidak Ada
+                          </span>
+                        )}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+        </main>
+      </div>
+
     </div>
   );
 }
