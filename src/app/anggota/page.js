@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import Link from 'next/link';
 import { supabase } from '@/utils/supabaseClient';
+import Navigation from '../../components/Navigation';
 
 // Initial pre-populated mockup data for realistic representation
 const INITIAL_MEMBERS = [
@@ -962,7 +963,7 @@ export default function Anggota() {
       )}
 
       {/* 2. SIDEBAR - Elegant white responsive drawer */}
-      <aside className={`fixed left-0 top-0 h-full w-[260px] z-50 bg-white shadow-[0_8px_30px_rgb(0,0,0,0.02)] flex flex-col py-8 px-4 border-r border-slate-100 transition-transform duration-300 lg:translate-x-0 ${
+      <aside className={`fixed left-0 top-0 h-full w-[260px] z-50 bg-white shadow-[0_8px_30px_rgb(0,0,0,0.02)] flex flex-col py-8 px-4 border-r border-slate-100 transition-transform duration-300 lg:hidden ${
         isMobileSidebarOpen ? "translate-x-0" : "-translate-x-full"
       }`}>
         
@@ -1007,6 +1008,14 @@ export default function Anggota() {
 
           <Link 
             className="group text-slate-500 hover:text-emerald-600 hover:bg-emerald-50/30 rounded-xl px-4 py-3 flex items-center gap-3.5 transition-all duration-200 font-semibold text-[14px]" 
+            href="/kesehatan"
+          >
+            <span className="material-symbols-outlined text-xl text-slate-400 group-hover:text-emerald-500 transition-colors">monitor_heart</span>
+            <span>Kesehatan Anggota</span>
+          </Link>
+
+          <Link 
+            className="group text-slate-500 hover:text-emerald-600 hover:bg-emerald-50/30 rounded-xl px-4 py-3 flex items-center gap-3.5 transition-all duration-200 font-semibold text-[14px]" 
             href="/aktivitas"
           >
             <span className="material-symbols-outlined text-xl text-slate-400 group-hover:text-emerald-500 transition-colors">task_alt</span>
@@ -1032,8 +1041,8 @@ export default function Anggota() {
 
       </aside>
 
-      {/* Main Content Wrapper - Responsive margin left */}
-      <div className="lg:ml-[260px] flex-1 flex flex-col min-h-screen relative overflow-x-hidden w-full">
+      {/* Main Content Wrapper */}
+      <div className="flex-1 flex flex-col min-h-screen relative overflow-x-hidden w-full">
         {/* Subtle decorative background gradient */}
         <div className="absolute top-0 left-0 right-0 h-64 bg-gradient-to-b from-emerald-50/60 via-slate-50/30 to-transparent -z-10" />
 
@@ -1370,7 +1379,7 @@ export default function Anggota() {
                         <td className="px-5 py-5.5">
                           <div className="font-poppins font-bold text-sm text-slate-800 leading-tight flex items-center gap-2 flex-wrap">
                             {member.name}
-                            <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-[9px] font-bold border ${
+                            <span className={`inline-flex items-center px-1.5 py-0.5 rounded-full text-[8px] font-bold border ${
                               member.village === "Golo Mori"
                                 ? "bg-indigo-50 text-indigo-700 border-indigo-100"
                                 : "bg-emerald-50 text-emerald-700 border-emerald-100"

@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { supabase } from '@/utils/supabaseClient';
+import Navigation from '../../components/Navigation';
 
 // Pre-populated realistic initial activities for the timeline
 const INITIAL_ACTIVITIES = [
@@ -40,9 +41,9 @@ const INITIAL_ACTIVITIES = [
 
 export default function AktivitasPage() {
   // App States
-  const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
   const [activities, setActivities] = useState(INITIAL_ACTIVITIES);
   const [showProfileDropdown, setShowProfileDropdown] = useState(false);
+  const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [isLoading, setIsLoading] = useState(true);
 
@@ -194,7 +195,7 @@ export default function AktivitasPage() {
   };
 
   return (
-    <div className="bg-[#f8fafc] text-slate-800 min-h-screen antialiased flex font-sans selection:bg-emerald-500 selection:text-white">
+    <div className="bg-[#f8fafc] text-slate-800 min-h-screen antialiased font-sans selection:bg-emerald-500 selection:text-white">
       {/* Toast Notification */}
       {toast && (
         <div className="fixed top-6 right-6 z-[9999] flex items-center gap-3 bg-white px-5 py-4 rounded-xl shadow-[0_10px_30px_rgba(0,0,0,0.08)] border-l-4 border-emerald-500 animate-slide-in">
@@ -221,12 +222,10 @@ export default function AktivitasPage() {
         />
       )}
 
-      {/* 1. SIDEBAR - Elegant white responsive drawer */}
-      <aside className={`fixed left-0 top-0 h-full w-[260px] z-50 bg-white shadow-[0_8px_30px_rgb(0,0,0,0.02)] flex flex-col py-8 px-4 border-r border-slate-100 transition-transform duration-300 lg:translate-x-0 ${
+      {/* Mobile Sidebar Drawer */}
+      <aside className={`fixed left-0 top-0 h-full w-[260px] z-50 bg-white shadow-[0_8px_30px_rgb(0,0,0,0.02)] flex flex-col py-8 px-4 border-r border-slate-100 transition-transform duration-300 lg:hidden ${
         isMobileSidebarOpen ? "translate-x-0" : "-translate-x-full"
       }`}>
-        
-        {/* Mobile Close Button inside sidebar */}
         <button 
           onClick={() => setIsMobileSidebarOpen(false)}
           className="lg:hidden absolute top-5 right-5 text-slate-400 hover:text-slate-700 hover:bg-slate-100 rounded-xl p-1.5 transition-all"
@@ -234,7 +233,6 @@ export default function AktivitasPage() {
           <span className="material-symbols-outlined text-xl">close</span>
         </button>
 
-        {/* Brand / Logo */}
         <div className="px-3 mb-10">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-2xl bg-gradient-to-br from-emerald-400 to-teal-500 flex items-center justify-center text-white font-extrabold text-xl shadow-lg shadow-emerald-500/20">
@@ -247,53 +245,13 @@ export default function AktivitasPage() {
           </div>
         </div>
 
-        {/* Navigation Menus - "Aktivitas Harian" is highlighted */}
         <nav className="flex-1 flex flex-col gap-2 overflow-y-auto">
-          <Link 
-            className="group text-slate-500 hover:text-emerald-600 hover:bg-emerald-50/30 rounded-xl px-4 py-3 flex items-center gap-3.5 transition-all duration-200 font-semibold text-[14px]" 
-            href="/"
-          >
-            <span className="material-symbols-outlined text-xl text-slate-400 group-hover:text-emerald-500 transition-colors">dashboard</span>
-            <span>Dashboard</span>
-          </Link>
-          
-          <Link 
-            className="group text-slate-500 hover:text-emerald-600 hover:bg-emerald-50/30 rounded-xl px-4 py-3 flex items-center gap-3.5 transition-all duration-200 font-semibold text-[14px]" 
-            href="/anggota"
-          >
-            <span className="material-symbols-outlined text-xl text-slate-400 group-hover:text-emerald-500 transition-colors">group</span>
-            <span>Anggota</span>
-          </Link>
-
-          <Link 
-            className="bg-emerald-50/80 text-emerald-700 font-bold rounded-xl pl-3.5 pr-4 py-3 flex items-center gap-3.5 border-l-4 border-emerald-500 transition-all text-[14px]" 
-            href="/aktivitas"
-          >
-            <span className="material-symbols-outlined text-xl text-emerald-600" style={{ fontVariationSettings: '"FILL" 1' }}>task_alt</span>
-            <span>Aktivitas Harian</span>
-          </Link>
-
-          <Link 
-            className="group text-slate-500 hover:text-emerald-600 hover:bg-emerald-50/30 rounded-xl px-4 py-3 flex items-center gap-3.5 transition-all duration-200 font-semibold text-[14px]" 
-            href="/insiden"
-          >
-            <span className="material-symbols-outlined text-xl text-slate-400 group-hover:text-emerald-500 transition-colors">report_problem</span>
-            <span>Insiden</span>
-          </Link>
-
-          <Link 
-            className="group text-slate-500 hover:text-emerald-600 hover:bg-emerald-50/30 rounded-xl px-4 py-3 flex items-center gap-3.5 transition-all duration-200 font-semibold text-[14px]" 
-            href="/emergency"
-          >
-            <span className="material-symbols-outlined text-xl text-slate-400 group-hover:text-emerald-500 transition-colors">contact_phone</span>
-            <span>Emergency Contact</span>
-          </Link>
+          <Navigation />
         </nav>
-
       </aside>
 
-      {/* Main Content Wrapper - Responsive margin left */}
-      <div className="lg:ml-[260px] flex-1 flex flex-col min-h-screen relative overflow-x-hidden w-full">
+      {/* Main Content */}
+      <div className="flex-1 flex flex-col min-h-screen relative overflow-x-hidden w-full">
         {/* Subtle decorative background gradient */}
         <div className="absolute top-0 left-0 right-0 h-64 bg-gradient-to-b from-emerald-50/60 via-slate-50/30 to-transparent -z-10" />
 

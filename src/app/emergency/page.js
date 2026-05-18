@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { supabase } from '@/utils/supabaseClient';
+import Navigation from '../../components/Navigation';
 
 // Detailed mock emergency contacts with regional categorizations
 const CONTACTS_DATA = [
@@ -421,7 +422,7 @@ export default function EmergencyPage() {
       )}
 
       {/* 1. SIDEBAR - Elegant white responsive drawer */}
-      <aside className={`fixed left-0 top-0 h-full w-[260px] z-50 bg-white shadow-[0_8px_30px_rgb(0,0,0,0.02)] flex flex-col py-8 px-4 border-r border-slate-100 transition-transform duration-300 lg:translate-x-0 ${
+      <aside className={`fixed left-0 top-0 h-full w-[260px] z-50 bg-white shadow-[0_8px_30px_rgb(0,0,0,0.02)] flex flex-col py-8 px-4 border-r border-slate-100 transition-transform duration-300 lg:hidden ${
         isMobileSidebarOpen ? "translate-x-0" : "-translate-x-full"
       }`}>
         
@@ -481,6 +482,14 @@ export default function EmergencyPage() {
           </Link>
 
           <Link 
+            className="group text-slate-500 hover:text-emerald-600 hover:bg-emerald-50/30 rounded-xl px-4 py-3 flex items-center gap-3.5 transition-all duration-200 font-semibold text-[14px]" 
+            href="/kesehatan"
+          >
+            <span className="material-symbols-outlined text-xl text-slate-400 group-hover:text-emerald-500 transition-colors">favorite</span>
+            <span>Kesehatan Anggota</span>
+          </Link>
+
+          <Link 
             className="bg-emerald-50/80 text-emerald-700 font-bold rounded-xl pl-3.5 pr-4 py-3 flex items-center gap-3.5 border-l-4 border-emerald-500 transition-all text-[14px]" 
             href="/emergency"
           >
@@ -491,8 +500,8 @@ export default function EmergencyPage() {
 
       </aside>
 
-      {/* Main Content Wrapper - Responsive margin left */}
-      <div className="lg:ml-[260px] flex-1 flex flex-col min-h-screen relative overflow-x-hidden w-full">
+      {/* Main Content Wrapper */}
+      <div className="flex-1 flex flex-col min-h-screen relative overflow-x-hidden w-full">
         {/* Subtle decorative background gradient */}
         <div className="absolute top-0 left-0 right-0 h-64 bg-gradient-to-b from-emerald-50/60 via-slate-50/30 to-transparent -z-10" />
 

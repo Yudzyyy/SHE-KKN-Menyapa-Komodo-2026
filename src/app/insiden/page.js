@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { supabase } from '@/utils/supabaseClient';
+import Navigation from '../../components/Navigation';
 
 // Pre-populated initial incidents list for realistic dashboard demonstration
 const INITIAL_INCIDENTS = [
@@ -40,6 +41,7 @@ export default function InsidenPage() {
   const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
   const [incidents, setIncidents] = useState(INITIAL_INCIDENTS);
   const [showProfileDropdown, setShowProfileDropdown] = useState(false);
+  const [selectedIncidentPhoto, setSelectedIncidentPhoto] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [isLoading, setIsLoading] = useState(true);
 
@@ -273,7 +275,7 @@ export default function InsidenPage() {
       )}
 
       {/* 1. SIDEBAR - Elegant white responsive drawer */}
-      <aside className={`fixed left-0 top-0 h-full w-[260px] z-50 bg-white shadow-[0_8px_30px_rgb(0,0,0,0.02)] flex flex-col py-8 px-4 border-r border-slate-100 transition-transform duration-300 lg:translate-x-0 ${
+      <aside className={`fixed left-0 top-0 h-full w-[260px] z-50 bg-white shadow-[0_8px_30px_rgb(0,0,0,0.02)] flex flex-col py-8 px-4 border-r border-slate-100 transition-transform duration-300 lg:hidden ${
         isMobileSidebarOpen ? "translate-x-0" : "-translate-x-full"
       }`}>
         
@@ -300,51 +302,13 @@ export default function InsidenPage() {
 
         {/* Navigation Menus - "Insiden" is highlighted */}
         <nav className="flex-1 flex flex-col gap-2 overflow-y-auto">
-          <Link 
-            className="group text-slate-500 hover:text-emerald-600 hover:bg-emerald-50/30 rounded-xl px-4 py-3 flex items-center gap-3.5 transition-all duration-200 font-semibold text-[14px]" 
-            href="/"
-          >
-            <span className="material-symbols-outlined text-xl text-slate-400 group-hover:text-emerald-500 transition-colors">dashboard</span>
-            <span>Dashboard</span>
-          </Link>
-          
-          <Link 
-            className="group text-slate-500 hover:text-emerald-600 hover:bg-emerald-50/30 rounded-xl px-4 py-3 flex items-center gap-3.5 transition-all duration-200 font-semibold text-[14px]" 
-            href="/anggota"
-          >
-            <span className="material-symbols-outlined text-xl text-slate-400 group-hover:text-emerald-500 transition-colors">group</span>
-            <span>Anggota</span>
-          </Link>
-
-          <Link 
-            className="group text-slate-500 hover:text-emerald-600 hover:bg-emerald-50/30 rounded-xl px-4 py-3 flex items-center gap-3.5 transition-all duration-200 font-semibold text-[14px]" 
-            href="/aktivitas"
-          >
-            <span className="material-symbols-outlined text-xl text-slate-400 group-hover:text-emerald-500 transition-colors">task_alt</span>
-            <span>Aktivitas Harian</span>
-          </Link>
-
-          <Link 
-            className="bg-emerald-50/80 text-emerald-700 font-bold rounded-xl pl-3.5 pr-4 py-3 flex items-center gap-3.5 border-l-4 border-emerald-500 transition-all text-[14px]" 
-            href="/insiden"
-          >
-            <span className="material-symbols-outlined text-xl text-emerald-600" style={{ fontVariationSettings: '"FILL" 1' }}>report_problem</span>
-            <span>Insiden</span>
-          </Link>
-
-          <Link 
-            className="group text-slate-500 hover:text-emerald-600 hover:bg-emerald-50/30 rounded-xl px-4 py-3 flex items-center gap-3.5 transition-all duration-200 font-semibold text-[14px]" 
-            href="/emergency"
-          >
-            <span className="material-symbols-outlined text-xl text-slate-400 group-hover:text-emerald-500 transition-colors">contact_phone</span>
-            <span>Emergency Contact</span>
-          </Link>
+          <Navigation />
         </nav>
 
       </aside>
 
-      {/* Main Content Wrapper - Responsive margin left */}
-      <div className="lg:ml-[260px] flex-1 flex flex-col min-h-screen relative overflow-x-hidden w-full">
+      {/* Main Content Wrapper */}
+      <div className="flex-1 flex flex-col min-h-screen relative overflow-x-hidden w-full">
         {/* Subtle decorative background gradient */}
         <div className="absolute top-0 left-0 right-0 h-64 bg-gradient-to-b from-emerald-50/60 via-slate-50/30 to-transparent -z-10" />
 
@@ -625,18 +589,6 @@ export default function InsidenPage() {
             {/* Riwayat & Timeline (Right Column - 5/12) */}
             <div className="lg:col-span-5 flex flex-col gap-6">
               
-              {/* Summary Stats (2 Columns Row) */}
-              <div className="grid grid-cols-2 gap-4.5">
-                <div className="bg-white rounded-3xl border border-slate-100 p-5 flex flex-col gap-1.5 shadow-[0_4px_20px_rgba(0,0,0,0.01)] hover:shadow-md transition-shadow">
-                  <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Total Hari Ini</span>
-                  <span className="font-poppins font-extrabold text-2xl text-slate-800">{totalToday}</span>
-                </div>
-                <div className="bg-white rounded-3xl border border-slate-100 p-5 flex flex-col gap-1.5 shadow-[0_4px_20px_rgba(0,0,0,0.01)] hover:shadow-md transition-shadow">
-                  <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Belum Selesai</span>
-                  <span className="font-poppins font-extrabold text-2xl text-rose-500">{pendingCount}</span>
-                </div>
-              </div>
-
               {/* Timeline History Card */}
               <div className="bg-white rounded-3xl border border-slate-100 p-6.5 shadow-[0_4px_25px_rgba(0,0,0,0.02)] flex-1 flex flex-col overflow-hidden">
                 <div className="flex items-center justify-between border-b border-slate-50 pb-4 mb-5 shrink-0">
@@ -688,6 +640,19 @@ export default function InsidenPage() {
                           <p className="text-[11px] text-slate-400 leading-relaxed mt-0.5">
                             {incident.description}
                           </p>
+                          {incident.photo && (
+                            <button 
+                              type="button"
+                              onClick={() => setSelectedIncidentPhoto(incident.photo)}
+                              className="mt-3 overflow-hidden rounded-3xl border border-slate-200 shadow-sm w-full max-w-xs transition hover:shadow-lg"
+                            >
+                              <img
+                                src={incident.photo}
+                                alt="Foto Insiden"
+                                className="w-full h-40 object-cover"
+                              />
+                            </button>
+                          )}
                           <div className="text-[10px] text-slate-400 font-semibold mt-1 flex flex-wrap gap-1.5 items-center">
                             <span>Pelapor: <span className="text-emerald-700 font-bold">{incident.reporter}</span></span>
                             <span className="text-slate-300">•</span>
@@ -708,6 +673,21 @@ export default function InsidenPage() {
             </div>
 
           </div>
+
+          {selectedIncidentPhoto && (
+            <div className="fixed inset-0 z-[10000] flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm animate-fade-in">
+              <div className="relative max-w-3xl w-full rounded-3xl overflow-hidden bg-white shadow-2xl">
+                <button
+                  type="button"
+                  onClick={() => setSelectedIncidentPhoto(null)}
+                  className="absolute top-4 right-4 z-20 rounded-full bg-white/90 text-slate-700 shadow-lg p-2 hover:bg-white transition"
+                >
+                  <span className="material-symbols-outlined">close</span>
+                </button>
+                <img src={selectedIncidentPhoto} alt="Foto Insiden" className="w-full max-h-[80vh] object-contain bg-slate-900" />
+              </div>
+            </div>
+          )}
 
         </main>
 

@@ -3,12 +3,14 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { supabase } from '@/utils/supabaseClient';
+import Navigation from '../components/Navigation';
 
 export default function Home() {
   // App States
   const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
   const [showProfileDropdown, setShowProfileDropdown] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+  const [selectedIncidentPhoto, setSelectedIncidentPhoto] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
 
   // Toast Notification state
@@ -145,7 +147,7 @@ export default function Home() {
       )}
 
       {/* 1. SIDEBAR - Responsive drawer style */}
-      <aside className={`fixed left-0 top-0 h-full w-[260px] z-50 bg-white shadow-[0_8px_30px_rgb(0,0,0,0.02)] flex flex-col py-8 px-4 border-r border-slate-100 transition-transform duration-300 lg:translate-x-0 ${
+      <aside className={`fixed left-0 top-0 h-full w-[260px] z-50 bg-white shadow-[0_8px_30px_rgb(0,0,0,0.02)] flex flex-col py-8 px-4 border-r border-slate-100 transition-transform duration-300 lg:hidden ${
         isMobileSidebarOpen ? "translate-x-0" : "-translate-x-full"
       }`}>
         
@@ -172,51 +174,13 @@ export default function Home() {
 
         {/* Navigation Menus - "Dashboard" is highlighted */}
         <nav className="flex-1 flex flex-col gap-2 overflow-y-auto">
-          <Link 
-            className="bg-emerald-50/80 text-emerald-700 font-bold rounded-xl pl-3.5 pr-4 py-3 flex items-center gap-3.5 border-l-4 border-emerald-500 transition-all text-[14px]" 
-            href="/"
-          >
-            <span className="material-symbols-outlined text-xl text-emerald-600" style={{ fontVariationSettings: '"FILL" 1' }}>dashboard</span>
-            <span>Dashboard</span>
-          </Link>
-          
-          <Link 
-            className="group text-slate-500 hover:text-emerald-600 hover:bg-emerald-50/30 rounded-xl px-4 py-3 flex items-center gap-3.5 transition-all duration-200 font-semibold text-[14px]" 
-            href="/anggota"
-          >
-            <span className="material-symbols-outlined text-xl text-slate-400 group-hover:text-emerald-500 transition-colors">group</span>
-            <span>Anggota</span>
-          </Link>
-
-          <Link 
-            className="group text-slate-500 hover:text-emerald-600 hover:bg-emerald-50/30 rounded-xl px-4 py-3 flex items-center gap-3.5 transition-all duration-200 font-semibold text-[14px]" 
-            href="/aktivitas"
-          >
-            <span className="material-symbols-outlined text-xl text-slate-400 group-hover:text-emerald-500 transition-colors">task_alt</span>
-            <span>Aktivitas Harian</span>
-          </Link>
-
-          <Link 
-            className="group text-slate-500 hover:text-emerald-600 hover:bg-emerald-50/30 rounded-xl px-4 py-3 flex items-center gap-3.5 transition-all duration-200 font-semibold text-[14px]" 
-            href="/insiden"
-          >
-            <span className="material-symbols-outlined text-xl text-slate-400 group-hover:text-emerald-500 transition-colors">report_problem</span>
-            <span>Insiden</span>
-          </Link>
-
-          <Link 
-            className="group text-slate-500 hover:text-emerald-600 hover:bg-emerald-50/30 rounded-xl px-4 py-3 flex items-center gap-3.5 transition-all duration-200 font-semibold text-[14px]" 
-            href="/emergency"
-          >
-            <span className="material-symbols-outlined text-xl text-slate-400 group-hover:text-emerald-500 transition-colors">contact_phone</span>
-            <span>Emergency Contact</span>
-          </Link>
+          <Navigation />
         </nav>
 
       </aside>
 
-      {/* Main Content Wrapper - Responsive margin left */}
-      <div className="lg:ml-[260px] flex-1 flex flex-col min-h-screen relative overflow-x-hidden w-full">
+      {/* Main Content Wrapper */}
+      <div className="flex-1 flex flex-col min-h-screen relative overflow-x-hidden w-full">
         {/* Subtle decorative background gradient */}
         <div className="absolute top-0 left-0 right-0 h-64 bg-gradient-to-b from-emerald-50/60 via-slate-50/30 to-transparent -z-10" />
 
@@ -358,29 +322,29 @@ export default function Home() {
             </div>
 
             {/* Card 3: Total Sakit */}
-            <div className="bg-white rounded-2xl p-6 shadow-[0_4px_20px_rgba(0,0,0,0.02)] border border-slate-100 hover:shadow-md hover:-translate-y-0.5 transition-all duration-300 flex justify-between items-center group">
+            <div className="bg-white rounded-2xl p-6 shadow-[0_4px_20px_rgba(0,0,0,0.02)] border border-orange-100 hover:shadow-md hover:-translate-y-0.5 transition-all duration-300 flex justify-between items-center group">
               <div>
-                <p className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Total Sakit</p>
-                <h2 className="text-3xl font-extrabold text-slate-500 font-poppins leading-tight">{stats.totalSick}</h2>
-                <p className="text-[10px] text-slate-500 font-semibold mt-1 flex items-center gap-0.5">
+                <p className="text-xs font-bold text-orange-600 uppercase tracking-wider mb-2">Total Sakit</p>
+                <h2 className="text-3xl font-extrabold text-orange-500 font-poppins leading-tight">{stats.totalSick}</h2>
+                <p className="text-[10px] text-orange-600 font-semibold mt-1 flex items-center gap-0.5">
                   <span className="material-symbols-outlined text-xs">info</span> {stats.totalSick > 0 ? "Butuh Istirahat/Perawatan" : "Semua dalam kondisi sehat"}
                 </p>
               </div>
-              <div className="w-12 h-12 bg-slate-50 text-slate-400 group-hover:bg-slate-500 group-hover:text-white rounded-2xl flex items-center justify-center border border-slate-100/50 shadow-inner transition-colors duration-300">
+              <div className="w-12 h-12 bg-orange-50 text-orange-600 group-hover:bg-orange-500 group-hover:text-white rounded-2xl flex items-center justify-center border border-orange-100/50 shadow-inner transition-colors duration-300">
                 <span className="material-symbols-outlined text-xl">sick</span>
               </div>
             </div>
 
             {/* Card 4: Total Injury */}
-            <div className="bg-white rounded-2xl p-6 shadow-[0_4px_20px_rgba(0,0,0,0.02)] border border-slate-100 hover:shadow-md hover:-translate-y-0.5 transition-all duration-300 flex justify-between items-center group">
+            <div className="bg-white rounded-2xl p-6 shadow-[0_4px_20px_rgba(0,0,0,0.02)] border border-red-100 hover:shadow-md hover:-translate-y-0.5 transition-all duration-300 flex justify-between items-center group">
               <div>
-                <p className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Total Injury</p>
-                <h2 className="text-3xl font-extrabold text-slate-500 font-poppins leading-tight">{stats.totalInjury}</h2>
-                <p className="text-[10px] text-slate-500 font-semibold mt-1 flex items-center gap-0.5">
+                <p className="text-xs font-bold text-red-600 uppercase tracking-wider mb-2">Total Injury</p>
+                <h2 className="text-3xl font-extrabold text-red-600 font-poppins leading-tight">{stats.totalInjury}</h2>
+                <p className="text-[10px] text-red-600 font-semibold mt-1 flex items-center gap-0.5">
                   <span className="material-symbols-outlined text-xs">emergency</span> {stats.totalInjury > 0 ? `${stats.totalInjury} Penanganan Medis` : "Zero accident dilaporkan"}
                 </p>
               </div>
-              <div className="w-12 h-12 bg-slate-50 text-slate-400 group-hover:bg-slate-500 group-hover:text-white rounded-2xl flex items-center justify-center border border-slate-100/50 shadow-inner transition-colors duration-300">
+              <div className="w-12 h-12 bg-red-50 text-red-600 group-hover:bg-red-500 group-hover:text-white rounded-2xl flex items-center justify-center border border-red-100/50 shadow-inner transition-colors duration-300">
                 <span className="material-symbols-outlined text-xl">warning</span>
               </div>
             </div>
@@ -552,7 +516,9 @@ export default function Home() {
                             <img 
                               src={inc.photo} 
                               alt="Foto Insiden" 
+                              onClick={() => setSelectedIncidentPhoto(inc.photo)}
                               className="w-14 h-10 object-cover rounded-lg border border-slate-200 shadow-sm transition-transform duration-200 hover:scale-150 z-10 cursor-zoom-in" 
+                              title="Klik untuk memperbesar"
                             />
                           </div>
                         ) : (
@@ -568,6 +534,22 @@ export default function Home() {
               </table>
             </div>
           </div>
+
+          {/* Image Zoom Modal */}
+          {selectedIncidentPhoto && (
+            <div className="fixed inset-0 z-[10000] flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm animate-fade-in">
+              <div className="relative max-w-3xl w-full rounded-3xl overflow-hidden bg-white shadow-2xl">
+                <button
+                  type="button"
+                  onClick={() => setSelectedIncidentPhoto(null)}
+                  className="absolute top-4 right-4 z-20 rounded-full bg-white/90 text-slate-700 shadow-lg p-2 hover:bg-white transition"
+                >
+                  <span className="material-symbols-outlined">close</span>
+                </button>
+                <img src={selectedIncidentPhoto} alt="Foto Insiden" className="w-full max-h-[80vh] object-contain bg-slate-900" />
+              </div>
+            </div>
+          )}
 
         </main>
       </div>
