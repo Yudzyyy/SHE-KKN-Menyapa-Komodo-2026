@@ -45,13 +45,88 @@ export default function InsidenPage() {
   const [searchQuery, setSearchQuery] = useState("");
   const [isLoading, setIsLoading] = useState(true);
 
+  // Height dynamic matching for Left & Right Column
+  const leftCardRef = React.useRef(null);
+  const [leftHeight, setLeftHeight] = useState("auto");
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (leftCardRef.current) {
+        if (window.innerWidth >= 1024) {
+          setLeftHeight(`${leftCardRef.current.offsetHeight}px`);
+        } else {
+          setLeftHeight("550px");
+        }
+      }
+    };
+
+    handleResize();
+
+    let observer;
+    if (leftCardRef.current) {
+      observer = new ResizeObserver(handleResize);
+      observer.observe(leftCardRef.current);
+    }
+
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      if (observer) observer.disconnect();
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+
   // Stats States (dynamically calculated + updated)
   const [totalToday, setTotalToday] = useState(12);
   const [pendingCount, setPendingCount] = useState(3);
 
   // Form Field States
   const [reporterName, setReporterName] = useState("");
-  const [victimName, setVictimName] = useState("");
+  const [victimName, setVictimName] = useState("Tidak Ada");
+  const [selectedVictimId, setSelectedVictimId] = useState("");
+  const [membersList, setMembersList] = useState([]);
+
+  // Load members for incident report victim selection
+  useEffect(() => {
+    const fetchMembersForIncident = async () => {
+      try {
+        const { data, error } = await supabase
+          .from('anggota')
+          .select('id, nama, posko, catatan, kondisi')
+          .order('nama', { ascending: true });
+
+        if (error) throw error;
+
+        if (data) {
+          const sorted = [...data].sort((a, b) => (a.nama || "").localeCompare(b.nama || ""));
+          setMembersList(sorted);
+        }
+      } catch (err) {
+        console.error("Gagal mengambil data anggota untuk pilihan insiden:", err.message);
+        // Fallback to local storage
+        const stored = localStorage.getItem('she_members');
+        if (stored) {
+          try {
+            const parsed = JSON.parse(stored);
+            const mapped = parsed.map(m => ({
+              id: m.id,
+              nama: m.name,
+              posko: m.village,
+              catatan: JSON.stringify(m),
+              kondisi: m.kondisi
+            }));
+            const sortedMapped = mapped.sort((a, b) => (a.nama || "").localeCompare(b.nama || ""));
+            setMembersList(sortedMapped);
+          } catch (e) {
+            setMembersList([]);
+          }
+        }
+      }
+    };
+
+    fetchMembersForIncident();
+  }, []);
+
   const [severity, setSeverity] = useState("low"); // low, medium, high, emergency
   const [description, setDescription] = useState("");
   const [attachedFile, setAttachedFile] = useState(null);
@@ -228,9 +303,59 @@ export default function InsidenPage() {
           setPendingCount(prev => prev + 1);
         }
 
+        // Update member condition if a victim is selected
+        if (selectedVictimId) {
+          const targetKondisi = (severity === "emergency" || severity === "high") ? "Cedera" : "Sakit";
+          const victimMember = membersList.find(m => String(m.id) === String(selectedVictimId));
+          let updatedCatatan = "";
+          if (victimMember && victimMember.catatan) {
+            try {
+              const extra = JSON.parse(victimMember.catatan);
+              extra.medicalNotes = `Terkena insiden: ${description}`;
+              updatedCatatan = JSON.stringify(extra);
+            } catch (e) {
+              updatedCatatan = JSON.stringify({ medicalNotes: `Terkena insiden: ${description}` });
+            }
+          } else {
+            updatedCatatan = JSON.stringify({ medicalNotes: `Terkena insiden: ${description}` });
+          }
+
+          try {
+            const { error: updateError } = await supabase
+              .from('anggota')
+              .update({
+                kondisi: targetKondisi,
+                catatan: updatedCatatan
+              })
+              .eq('id', selectedVictimId);
+
+            if (updateError) throw updateError;
+
+            // Update local state list of members
+            setMembersList(prev => prev.map(m => String(m.id) === String(selectedVictimId) ? { ...m, kondisi: targetKondisi, catatan: updatedCatatan } : m));
+
+            // Sync with localStorage 'she_members'
+            const storedMembers = localStorage.getItem('she_members');
+            if (storedMembers) {
+              try {
+                const parsed = JSON.parse(storedMembers);
+                const updated = parsed.map(m => String(m.id) === String(selectedVictimId) ? {
+                  ...m,
+                  kondisi: targetKondisi,
+                  medicalNotes: `Terkena insiden: ${description}`,
+                } : m);
+                localStorage.setItem('she_members', JSON.stringify(updated));
+              } catch (e) {}
+            }
+          } catch (updateErr) {
+            console.error("Gagal memperbarui status kesehatan anggota:", updateErr.message);
+          }
+        }
+
         // Reset Fields
         setReporterName("");
-        setVictimName("");
+        setVictimName("Tidak Ada");
+        setSelectedVictimId("");
         setDescription("");
         setSeverity("low");
         setAttachedFile(null);
@@ -410,7 +535,10 @@ export default function InsidenPage() {
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
             
             {/* Form Laporan (Left Column - 7/12) */}
-            <div className="lg:col-span-7 bg-white rounded-3xl p-6.5 shadow-[0_4px_25px_rgba(0,0,0,0.02)] border border-slate-100 hover:shadow-md transition-shadow duration-300">
+            <div 
+              ref={leftCardRef}
+              className="lg:col-span-7 bg-white rounded-3xl p-6.5 shadow-[0_4px_25px_rgba(0,0,0,0.02)] border border-slate-100 hover:shadow-md transition-shadow duration-300"
+            >
               <div className="flex items-center gap-2.5 border-b border-slate-50 pb-4 mb-6">
                 <span className="material-symbols-outlined text-emerald-600 text-xl">add_circle</span>
                 <h3 className="font-poppins font-bold text-base text-slate-900">Buat Laporan Baru</h3>
@@ -431,18 +559,37 @@ export default function InsidenPage() {
                   />
                 </div>
 
-                {/* Victim Name */}
+                {/* Victim Name Selection */}
                 <div className="flex flex-col gap-1.5">
-                  <label className="font-bold text-slate-500 uppercase tracking-wider" htmlFor="victim-name">Nama Anggota Terkena Insiden *</label>
-                  <input 
-                    required
-                    className="px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-800 focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 focus:bg-white shadow-inner transition-all" 
-                    id="victim-name" 
-                    placeholder="Masukkan nama korban / terdampak (atau 'Tidak Ada')" 
-                    type="text"
-                    value={victimName}
-                    onChange={(e) => setVictimName(e.target.value)}
-                  />
+                  <label className="font-bold text-slate-500 uppercase tracking-wider" htmlFor="victim-select">Nama Anggota Terkena Insiden *</label>
+                  <div className="relative">
+                    <select 
+                      required
+                      className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-800 focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 focus:bg-white shadow-inner transition-all appearance-none cursor-pointer pr-10" 
+                      id="victim-select"
+                      value={selectedVictimId}
+                      onChange={(e) => {
+                        const val = e.target.value;
+                        setSelectedVictimId(val);
+                        if (val === "") {
+                          setVictimName("Tidak Ada");
+                        } else {
+                          const m = membersList.find(member => String(member.id) === String(val));
+                          setVictimName(m ? m.nama : "Tidak Ada");
+                        }
+                      }}
+                    >
+                      <option value="">Tidak Ada (Hanya Fasilitas / Lainnya)</option>
+                      {membersList.map((m) => (
+                        <option key={m.id} value={m.id}>
+                          {m.nama} ({m.posko || "Warloka Pesisir"}) - [{m.kondisi || "Sehat"}]
+                        </option>
+                      ))}
+                    </select>
+                    <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-slate-500">
+                      <span className="material-symbols-outlined text-sm">unfold_more</span>
+                    </div>
+                  </div>
                 </div>
 
                 {/* Severity Selection - Redesigned custom radios */}
@@ -587,7 +734,10 @@ export default function InsidenPage() {
             </div>
 
             {/* Riwayat & Timeline (Right Column - 5/12) */}
-            <div className="lg:col-span-5 flex flex-col gap-6">
+            <div 
+              className="lg:col-span-5 flex flex-col gap-6"
+              style={{ height: leftHeight }}
+            >
               
               {/* Timeline History Card */}
               <div className="bg-white rounded-3xl border border-slate-100 p-6.5 shadow-[0_4px_25px_rgba(0,0,0,0.02)] flex-1 flex flex-col overflow-hidden">

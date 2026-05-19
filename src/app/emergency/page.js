@@ -7,163 +7,161 @@ import Navigation from '../../components/Navigation';
 
 // Detailed mock emergency contacts with regional categorizations
 const CONTACTS_DATA = [
-  // SECTION 1: Nomor Darurat Umum (Nasional)
+  // DI Yogyakarta
   {
-    id: "CON-NAT-001",
+    id: "CON-DIY-001",
     name: "Panggilan Darurat Umum",
-    type: "Darurat Nasional",
+    type: "Darurat Umum",
     phone: "112",
-    region: "Nomor Darurat Umum",
+    region: "DI Yogyakarta",
     category: "police",
     description: "Nomor darurat bebas pulsa nasional dari ponsel mana saja (bisa diakses dalam kondisi kartu SIM terkunci/tanpa pulsa)."
   },
   {
-    id: "CON-NAT-002",
-    name: "Ambulans / Kemenkes",
-    type: "Medis Nasional",
+    id: "CON-DIY-002",
+    name: "Ambulans Gawat Darurat Kemenkes",
+    type: "Medis",
     phone: "119",
-    region: "Nomor Darurat Umum",
+    region: "DI Yogyakarta",
     category: "hospital",
     description: "Layanan gawat darurat medis terintegrasi Kementerian Kesehatan RI."
   },
   {
-    id: "CON-NAT-003",
-    name: "Polisi",
-    type: "Keamanan Nasional",
-    phone: "110",
-    region: "Nomor Darurat Umum",
-    category: "police",
-    description: "Layanan bantuan kepolisian RI untuk laporan tindakan kriminal atau darurat keamanan."
-  },
-  {
-    id: "CON-NAT-004",
-    name: "BASARNAS",
-    type: "Penyelamatan Nasional",
-    phone: "115",
-    region: "Nomor Darurat Umum",
-    category: "fire",
-    description: "Badan Nasional Pencarian dan Pertolongan RI (Search and Rescue)."
-  },
-  {
-    id: "CON-NAT-005",
-    name: "Pemadam Kebakaran",
-    type: "Kebakaran Nasional",
-    phone: "113",
-    region: "Nomor Darurat Umum",
-    category: "fire",
-    description: "Layanan darurat penanggulangan bencana kebakaran nasional."
-  },
-
-  // SECTION 2: Kontak Darurat Labuan Bajo & Kecamatan Komodo (Lokasi KKN)
-  {
-    id: "CON-LBJ-001",
-    name: "RSUD Komodo (Labuan Bajo)",
-    type: "Rumah Sakit Rujukan Utama",
-    phone: "+62 813-3705-4054",
-    region: "Labuan Bajo & Kec. Komodo",
-    category: "hospital",
-    description: "Rumah sakit rujukan utama untuk tim KKN Komodo. Telepon Kantor: (0385) 2443153."
-  },
-  {
-    id: "CON-LBJ-002",
-    name: "Siloam Hospitals Labuan Bajo",
-    type: "Rumah Sakit Swasta",
-    phone: "(0385) 2438911",
-    region: "Labuan Bajo & Kec. Komodo",
-    category: "hospital",
-    description: "Layanan UGD gawat darurat 24 jam. Telepon Umum: (0385) 2438888."
-  },
-  {
-    id: "CON-LBJ-003",
-    name: "Puskesmas Labuan Bajo",
-    type: "Pusat Kesehatan Masyarakat",
-    phone: "+62 813-3932-2632",
-    region: "Labuan Bajo & Kec. Komodo",
-    category: "hospital",
-    description: "Fasilitas kesehatan tingkat pertama terdekat di wilayah Labuan Bajo."
-  },
-  {
-    id: "CON-LBJ-004",
-    name: "Puskesmas Golo Mori",
-    type: "Puskesmas Pembantu (Pustu)",
-    phone: "Hubungi Bidan/Kades",
-    region: "Labuan Bajo & Kec. Komodo",
-    category: "hospital",
-    description: "Disarankan untuk mencatat nomor Kepala Desa atau Bidan Desa setempat saat tiba di lokasi, karena fasilitas Pustu sering kali menggunakan kontak personal."
-  },
-  {
-    id: "CON-LBJ-005",
-    name: "Polres Manggarai Barat (Labuan Bajo)",
-    type: "Kepolisian Wilayah",
-    phone: "(0385) 41110",
-    region: "Labuan Bajo & Kec. Komodo",
-    category: "police",
-    description: "Layanan pengaduan keamanan dan kepolisian di wilayah hukum Manggarai Barat."
-  },
-  {
-    id: "CON-LBJ-006",
-    name: "Pos SAR Manggarai Barat",
-    type: "BASARNAS Labuan Bajo",
-    phone: "+62 813-3904-2061",
-    region: "Labuan Bajo & Kec. Komodo",
-    category: "fire",
-    description: "Sangat penting untuk koordinasi penyelamatan pesisir/laut. Telepon Kantor: (0385) 2440115."
-  },
-  {
-    id: "CON-LBJ-007",
-    name: "Satpolairud Labuan Bajo",
-    type: "Kepolisian Air & Udara",
-    phone: "+62 812-3793-1382",
-    region: "Labuan Bajo & Kec. Komodo",
-    category: "police",
-    description: "Kontak utama untuk bantuan mobilisasi logistik atau evakuasi taktis via jalur laut dari Warloka/Golo Mori."
-  },
-
-  // SECTION 3: Kontak Darurat Wilayah DI Yogyakarta
-  {
-    id: "CON-DIY-001",
-    name: "Polda DI Yogyakarta",
-    type: "Kepolisian Daerah",
-    phone: "(0274) 884444",
-    region: "DI Yogyakarta",
-    category: "police",
-    description: "Koordinasi utama kepolisian pusat wilayah DI Yogyakarta."
-  },
-  {
-    id: "CON-DIY-002",
-    name: "TRC BPBD DIY (Pusdalops)",
-    type: "Tim Reaksi Cepat",
-    phone: "+62 851-0300-9111",
-    region: "DI Yogyakarta",
-    category: "fire",
-    description: "Pusat Pengendalian Operasi Penanggulangan Bencana DIY. Telepon Kantor: (0274) 555584."
-  },
-  {
     id: "CON-DIY-003",
-    name: "Basarnas Yogyakarta",
-    type: "Kantor SAR Yogyakarta",
-    phone: "(0274) 6462111",
+    name: "SAR DIY Basarnas",
+    type: "SAR",
+    phone: "115",
     region: "DI Yogyakarta",
     category: "fire",
-    description: "Layanan pencarian dan pertolongan wilayah Yogyakarta dan sekitarnya."
+    description: "Badan Nasional Pencarian dan Pertolongan RI (Search and Rescue) wilayah DIY."
   },
   {
     id: "CON-DIY-004",
-    name: "RSUP Dr. Sardjito",
-    type: "Rumah Sakit Rujukan Utama",
-    phone: "(0274) 560300",
+    name: "SAR DIY Landline",
+    type: "SAR",
+    phone: "(0274) 587 559",
     region: "DI Yogyakarta",
-    category: "hospital",
-    description: "Layanan gawat darurat medis trauma & rujukan utama UGM. IGD: (0274) 631190."
+    category: "fire",
+    description: "Layanan telepon kabel kantor SAR DIY."
   },
   {
     id: "CON-DIY-005",
-    name: "RSA UGM (Rumah Sakit Akademik)",
-    type: "Rumah Sakit Akademik UGM",
-    phone: "(0274) 4530303",
+    name: "PMI DIY",
+    type: "Kesehatan",
+    phone: "(0274) 372 176",
     region: "DI Yogyakarta",
     category: "hospital",
-    description: "Layanan darurat medis RSA UGM (Emergency). Layanan Umum: (0274) 4530404."
+    description: "Palang Merah Indonesia wilayah Daerah Istimewa Yogyakarta."
+  },
+  {
+    id: "CON-DIY-006",
+    name: "Polda DIY",
+    type: "Kepolisian",
+    phone: "(0274) 563 494",
+    region: "DI Yogyakarta",
+    category: "police",
+    description: "Markas Kepolisian Daerah Daerah Istimewa Yogyakarta."
+  },
+  {
+    id: "CON-DIY-007",
+    name: "Polresta Yogyakarta",
+    type: "Kepolisian",
+    phone: "(0274) 543 920",
+    region: "DI Yogyakarta",
+    category: "police",
+    description: "Markas Kepolisian Resor Kota Yogyakarta."
+  },
+  {
+    id: "CON-DIY-008",
+    name: "Polres Sleman",
+    type: "Kepolisian",
+    phone: "(0274) 868 410",
+    region: "DI Yogyakarta",
+    category: "police",
+    description: "Markas Kepolisian Resor Sleman."
+  },
+  {
+    id: "CON-DIY-009",
+    name: "Polres Bantul",
+    type: "Kepolisian",
+    phone: "(0274) 367 410",
+    region: "DI Yogyakarta",
+    category: "police",
+    description: "Markas Kepolisian Resor Bantul."
+  },
+  {
+    id: "CON-DIY-010",
+    name: "RSU Dr. Sardjito",
+    type: "Kesehatan",
+    phone: "(0274) 587 333",
+    region: "DI Yogyakarta",
+    category: "hospital",
+    description: "Rumah Sakit Umum Pusat Dr. Sardjito Yogyakarta (Rujukan Utama)."
+  },
+
+  // Labuan Bajo & Kec. Komodo
+  {
+    id: "CON-LBJ-001",
+    name: "Layanan Polisi Terintegrasi",
+    type: "Keamanan",
+    phone: "110",
+    region: "Labuan Bajo & Kec. Komodo",
+    category: "police",
+    description: "Layanan kepolisian darurat terintegrasi nasional."
+  },
+  {
+    id: "CON-LBJ-002",
+    name: "Hotline Polres Manggarai Barat (24 Jam)",
+    type: "Keamanan",
+    phone: "0811-3832-006",
+    region: "Labuan Bajo & Kec. Komodo",
+    category: "police",
+    description: "Pusat pengaduan dan bantuan keamanan 24 jam Polres Manggarai Barat."
+  },
+  {
+    id: "CON-LBJ-003",
+    name: "Pos SAR Labuan Bajo",
+    type: "Penyelamatan",
+    phone: "115",
+    region: "Labuan Bajo & Kec. Komodo",
+    category: "fire",
+    description: "Pos Pencarian dan Pertolongan (Basarnas) Labuan Bajo."
+  },
+  {
+    id: "CON-LBJ-004",
+    name: "RSUD Komodo Golo Bilas",
+    type: "Kesehatan",
+    phone: "0813-3705-5250",
+    region: "Labuan Bajo & Kec. Komodo",
+    category: "hospital",
+    description: "Rumah Sakit Umum Daerah Komodo, Golo Bilas."
+  },
+  {
+    id: "CON-LBJ-005",
+    name: "RS Siloam Labuan Bajo (Emergency)",
+    type: "Kesehatan",
+    phone: "(0385) 2381 911",
+    region: "Labuan Bajo & Kec. Komodo",
+    category: "hospital",
+    description: "Unit Gawat Darurat (UGD) Siloam Hospitals Labuan Bajo."
+  },
+  {
+    id: "CON-LBJ-006",
+    name: "RS Siloam Labuan Bajo (Hotline)",
+    type: "Kesehatan",
+    phone: "1500-911",
+    region: "Labuan Bajo & Kec. Komodo",
+    category: "hospital",
+    description: "Layanan hotline/telepon umum Siloam Hospitals Labuan Bajo."
+  },
+  {
+    id: "CON-LBJ-007",
+    name: "Layanan Cepat Tanggap Kesehatan (PSC)",
+    type: "Kesehatan",
+    phone: "119",
+    region: "Labuan Bajo & Kec. Komodo",
+    category: "hospital",
+    description: "Public Safety Center (PSC) layanan tanggap darurat medis cepat."
   }
 ];
 
@@ -388,7 +386,6 @@ export default function EmergencyPage() {
 
   // Contacts by region
   const regions = [
-    "Nomor Darurat Umum",
     "Labuan Bajo & Kec. Komodo",
     "DI Yogyakarta"
   ];
@@ -610,6 +607,20 @@ export default function EmergencyPage() {
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
               />
+            </div>
+          </div>
+
+          {/* Catatan Penting Lapangan Banner */}
+          <div className="bg-amber-50/70 border border-amber-200/50 rounded-2xl p-5 flex flex-col sm:flex-row gap-4 items-start animate-fade-in shadow-sm">
+            <div className="w-10 h-10 rounded-xl bg-amber-500 text-white flex items-center justify-center shrink-0 shadow-sm shadow-amber-500/20">
+              <span className="material-symbols-outlined text-lg">info</span>
+            </div>
+            <div className="flex flex-col gap-1">
+              <h4 className="font-poppins font-extrabold text-xs text-amber-800 tracking-wide uppercase">Catatan Penting Lapangan</h4>
+              <ul className="list-disc pl-4.5 text-[11px] text-amber-700/90 font-semibold leading-relaxed flex flex-col gap-1">
+                <li>Nomor darurat nasional seperti 112, 110, dan 119 bisa diakses tanpa pulsa.</li>
+                <li>Untuk wilayah Warloka Pesisir dan Golo Mori, sangat disarankan segera mencatat nomor HP Kepala Desa, Bhabinkamtibmas, dan Babinsa setempat begitu tiba di lokasi karena penanganan tercepat berbasis komunitas lokal.</li>
+              </ul>
             </div>
           </div>
 

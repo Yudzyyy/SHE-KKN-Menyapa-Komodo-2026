@@ -7,18 +7,17 @@ import Navigation from '../../components/Navigation';
 
 // Initial pre-populated mockup data for realistic representation
 const INITIAL_MEMBERS = [
-  // Warloka Pesisir (15 members)
   {
     id: "M-101",
-    name: "Budi Santoso",
+    name: "Hifzan Hibatul Haqqi",
     nim: "22/492135/TK/54123",
-    major: "Teknik Kelautan",
+    major: "Teknik Sipil",
     phone: "+62 812-3456-7890",
     profilePic: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=120",
     canSwim: true,
     noSeasick: true,
-    medicalHistory: "Alergi makanan laut (ringan)",
-    medicalNotes: "Selalu sediakan obat antihistamin saat survei lapangan.",
+    medicalHistory: "Tidak ada riwayat penyakit",
+    medicalNotes: "Sehat walafiat, siap bertugas.",
     emergencyContactName: "Siti Rahma",
     emergencyContactRelation: "Ibu",
     emergencyContactPhone: "+62 811-2233-4455",
@@ -26,31 +25,31 @@ const INITIAL_MEMBERS = [
   },
   {
     id: "M-102",
-    name: "Siti Aminah",
-    nim: "22/493412/GL/54211",
-    major: "Teknik Geologi",
+    name: "Mahran Akbar Hamdi Buldan",
+    nim: "22/493412/TK/54211",
+    major: "Teknik Sipil",
     phone: "+62 813-9876-5432",
-    profilePic: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=120",
+    profilePic: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&q=80&w=120",
     canSwim: true,
     noSeasick: false,
-    medicalHistory: "Asma (ringan)",
-    medicalNotes: "Wajib membawa inhaler pribadi di dalam tas lapangan.",
+    medicalHistory: "Tidak ada riwayat penyakit",
+    medicalNotes: "Sehat walafiat, siap bertugas.",
     emergencyContactName: "Ahmad Fauzi",
     emergencyContactRelation: "Ayah",
     emergencyContactPhone: "+62 812-3344-5566",
-    village: "Warloka Pesisir"
+    village: "Golo Mori"
   },
   {
     id: "M-103",
-    name: "Rian Hidayat",
-    nim: "22/495123/IK/54390",
-    major: "Ilmu Kelautan",
+    name: "Argya Zheva Ryeasanka Putra",
+    nim: "22/495123/TK/54390",
+    major: "Teknik Geodesi",
     phone: "+62 821-4455-6677",
-    profilePic: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&q=80&w=120",
+    profilePic: "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&q=80&w=120",
     canSwim: true,
     noSeasick: true,
     medicalHistory: "Tidak ada riwayat penyakit",
-    medicalNotes: "Kondisi fisik prima, siap untuk penyelaman lapangan.",
+    medicalNotes: "Sehat walafiat, siap bertugas.",
     emergencyContactName: "Dewi Lestari",
     emergencyContactRelation: "Kakak",
     emergencyContactPhone: "+62 815-5566-7788",
@@ -58,31 +57,31 @@ const INITIAL_MEMBERS = [
   },
   {
     id: "M-104",
-    name: "Aditya Pratama",
-    nim: "22/496221/TM/54456",
-    major: "Teknik Mesin",
+    name: "Benjamin Sigit",
+    nim: "22/496221/TK/54456",
+    major: "Teknologi Informasi",
     phone: "+62 812-5566-9900",
-    profilePic: "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&q=80&w=120",
+    profilePic: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&q=80&w=120",
     canSwim: false,
     noSeasick: false,
-    medicalHistory: "Alergi debu & cuaca dingin",
-    medicalNotes: "Gunakan masker di area tambang/berdebu. Hindari shift malam dingin.",
+    medicalHistory: "Tidak ada riwayat penyakit",
+    medicalNotes: "Sehat walafiat, siap bertugas.",
     emergencyContactName: "Joko Pratama",
     emergencyContactRelation: "Ayah",
     emergencyContactPhone: "+62 811-6677-8899",
-    village: "Warloka Pesisir"
+    village: "Golo Mori"
   },
   {
     id: "M-105",
-    name: "Larasati Putri",
-    nim: "22/497332/TL/54567",
-    major: "Teknik Lingkungan",
+    name: "Raihan Bayuaji",
+    nim: "22/497332/SV/54567",
+    major: "Teknologi Rekayasa Pelaksanan Bangunan Sipil",
     phone: "+62 819-2233-8844",
-    profilePic: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&q=80&w=120",
+    profilePic: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80&w=120",
     canSwim: true,
     noSeasick: true,
-    medicalHistory: "Maag kronis",
-    medicalNotes: "Wajib makan tepat waktu. Selalu bawa obat lambung (Antasida).",
+    medicalHistory: "Tidak ada riwayat penyakit",
+    medicalNotes: "Sehat walafiat, siap bertugas.",
     emergencyContactName: "Rini Astuti",
     emergencyContactRelation: "Ibu",
     emergencyContactPhone: "+62 812-8899-0011",
@@ -90,31 +89,31 @@ const INITIAL_MEMBERS = [
   },
   {
     id: "M-106",
-    name: "Farhan Ramadhan",
-    nim: "22/498443/TS/54678",
-    major: "Teknik Sipil",
+    name: "Khilyatul Husna",
+    nim: "22/498443/SV/54678",
+    major: "Teknologi Rekayasa Pelaksanan Bangunan Sipil",
     phone: "+62 857-1122-3344",
-    profilePic: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80&w=120",
+    profilePic: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=120",
     canSwim: false,
     noSeasick: true,
     medicalHistory: "Tidak ada riwayat penyakit",
-    medicalNotes: "Fisik sehat, disarankan rompi keselamatan ekstra di dekat air.",
+    medicalNotes: "Sehat walafiat, siap bertugas.",
     emergencyContactName: "Bambang",
     emergencyContactRelation: "Ayah",
     emergencyContactPhone: "+62 813-9900-1122",
-    village: "Warloka Pesisir"
+    village: "Golo Mori"
   },
   {
     id: "M-107",
-    name: "Dian Lestari",
-    nim: "22/499554/BI/54789",
-    major: "Biologi",
+    name: "Tegar Taufik Wibowo",
+    nim: "22/499554/SV/54789",
+    major: "Teknik Pengelolaan dan Perawatan Alat Berat",
     phone: "+62 878-4455-8899",
-    profilePic: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&q=80&w=120",
+    profilePic: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&q=80&w=120",
     canSwim: true,
     noSeasick: false,
-    medicalHistory: "Alergi dingin (kaligata)",
-    medicalNotes: "Hindari berenang di air bersuhu sangat rendah tanpa wetsuit.",
+    medicalHistory: "Tidak ada riwayat penyakit",
+    medicalNotes: "Sehat walafiat, siap bertugas.",
     emergencyContactName: "Hendra Lestari",
     emergencyContactRelation: "Kakak",
     emergencyContactPhone: "+62 812-1122-4455",
@@ -122,31 +121,31 @@ const INITIAL_MEMBERS = [
   },
   {
     id: "M-108",
-    name: "Eko Wijaya",
-    nim: "22/500665/TG/54890",
-    major: "Teknik Geofisika",
+    name: "Titis Wahyudi Putro",
+    nim: "22/500665/SV/54890",
+    major: "Teknologi Rekayasa Internet",
     phone: "+62 812-9900-8877",
-    profilePic: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&q=80&w=120",
-    canSwim: true,
-    noSeasick: true,
-    medicalHistory: "Riwayat cedera lutut",
-    medicalNotes: "Hindari membawa beban ransel melebihi 15kg saat tracking lapangan.",
-    emergencyContactName: "Sri Utami",
-    emergencyContactRelation: "Ibu",
-    emergencyContactPhone: "+62 811-3344-9900",
-    village: "Warloka Pesisir"
-  },
-  {
-    id: "M-109",
-    name: "Rina Amelia",
-    nim: "22/501776/KG/54901",
-    major: "Kedokteran Gigi",
-    phone: "+62 877-6655-4433",
-    profilePic: "https://images.unsplash.com/photo-1594744803329-e58b31de215f?auto=format&fit=crop&q=80&w=120",
+    profilePic: "https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?auto=format&fit=crop&q=80&w=120",
     canSwim: true,
     noSeasick: true,
     medicalHistory: "Tidak ada riwayat penyakit",
-    medicalNotes: "Kondisi sehat, aktif melakukan penyuluhan kesehatan gigi warga pesisir.",
+    medicalNotes: "Sehat walafiat, siap bertugas.",
+    emergencyContactName: "Sri Utami",
+    emergencyContactRelation: "Ibu",
+    emergencyContactPhone: "+62 811-3344-9900",
+    village: "Golo Mori"
+  },
+  {
+    id: "M-109",
+    name: "Fathan Surya Pradana",
+    nim: "22/501776/GE/54901",
+    major: "Geografi Lingkungan",
+    phone: "+62 877-6655-4433",
+    profilePic: "https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&q=80&w=120",
+    canSwim: true,
+    noSeasick: true,
+    medicalHistory: "Tidak ada riwayat penyakit",
+    medicalNotes: "Sehat walafiat, siap bertugas.",
     emergencyContactName: "Susilo",
     emergencyContactRelation: "Ayah",
     emergencyContactPhone: "+62 813-4455-6677",
@@ -154,31 +153,31 @@ const INITIAL_MEMBERS = [
   },
   {
     id: "M-110",
-    name: "Guntur Wibowo",
-    nim: "22/502887/SP/55012",
-    major: "Sosiologi",
+    name: "Muhammad Raihan Sinergie Proton",
+    nim: "22/502887/PA/55012",
+    major: "Elektronika dan Instrumentasi",
     phone: "+62 822-7788-9900",
-    profilePic: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&q=80&w=120",
+    profilePic: "https://images.unsplash.com/photo-1519345182560-3f2917c472ef?auto=format&fit=crop&q=80&w=120",
     canSwim: false,
     noSeasick: false,
     medicalHistory: "Tidak ada riwayat penyakit",
-    medicalNotes: "Fisik baik, siap bertugas untuk survei sosio-ekonomi masyarakat pesisir.",
+    medicalNotes: "Sehat walafiat, siap bertugas.",
     emergencyContactName: "Hariyanti",
     emergencyContactRelation: "Ibu",
     emergencyContactPhone: "+62 812-9988-7766",
-    village: "Warloka Pesisir"
+    village: "Golo Mori"
   },
   {
     id: "M-111",
-    name: "Mega Lestari",
-    nim: "22/503998/AN/55123",
-    major: "Antropologi",
+    name: "Raisha Fitriani Putriariyanto",
+    nim: "22/503998/PA/55123",
+    major: "Elektronika dan Instrumentasi",
     phone: "+62 819-3344-5566",
-    profilePic: "https://images.unsplash.com/photo-1567532939604-b6b5b0db2604?auto=format&fit=crop&q=80&w=120",
+    profilePic: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&q=80&w=120",
     canSwim: true,
     noSeasick: true,
-    medicalHistory: "Alergi seafood ringan",
-    medicalNotes: "Hindari konsumsi kerang laut selama kegiatan lapangan.",
+    medicalHistory: "Tidak ada riwayat penyakit",
+    medicalNotes: "Sehat walafiat, siap bertugas.",
     emergencyContactName: "Kartolo",
     emergencyContactRelation: "Ayah",
     emergencyContactPhone: "+62 815-7766-5544",
@@ -186,31 +185,31 @@ const INITIAL_MEMBERS = [
   },
   {
     id: "M-112",
-    name: "Yusuf Maulana",
-    nim: "22/504109/AR/55234",
-    major: "Arsitektur",
+    name: "Farikha Aulia Hanum",
+    nim: "22/504109/HK/55234",
+    major: "Ilmu Hukum",
     phone: "+62 812-4455-8811",
-    profilePic: "https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?auto=format&fit=crop&q=80&w=120",
+    profilePic: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&q=80&w=120",
     canSwim: false,
     noSeasick: true,
     medicalHistory: "Tidak ada riwayat penyakit",
-    medicalNotes: "Merancang tata ruang fasilitas air bersih mess Warloka.",
+    medicalNotes: "Sehat walafiat, siap bertugas.",
     emergencyContactName: "Siti Zubaidah",
     emergencyContactRelation: "Ibu",
     emergencyContactPhone: "+62 811-9988-0011",
-    village: "Warloka Pesisir"
+    village: "Golo Mori"
   },
   {
     id: "M-113",
-    name: "Fitri Handayani",
-    nim: "22/505220/FA/55345",
-    major: "Farmasi",
+    name: "Salma Naura Akeyla Juwantino",
+    nim: "22/505220/HK/55345",
+    major: "Ilmu Hukum",
     phone: "+62 878-5566-7788",
     profilePic: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=120",
     canSwim: true,
     noSeasick: false,
-    medicalHistory: "Migren",
-    medicalNotes: "Wajib membawa obat pereda nyeri kepala pribadi.",
+    medicalHistory: "Tidak ada riwayat penyakit",
+    medicalNotes: "Sehat walafiat, siap bertugas.",
     emergencyContactName: "Ahmad Dahlan",
     emergencyContactRelation: "Ayah",
     emergencyContactPhone: "+62 812-4433-2211",
@@ -218,48 +217,47 @@ const INITIAL_MEMBERS = [
   },
   {
     id: "M-114",
-    name: "Hendra Setiawan",
-    nim: "22/506331/KT/55456",
-    major: "Kehutanan",
+    name: "Raden Roro Ailsa Noor Aroendya Rukmanda",
+    nim: "22/506331/HK/55456",
+    major: "Ilmu Hukum",
     phone: "+62 813-1122-3399",
-    profilePic: "https://images.unsplash.com/photo-1500048993953-d23a436266cf?auto=format&fit=crop&q=80&w=120",
+    profilePic: "https://images.unsplash.com/photo-1594744803329-e58b31de215f?auto=format&fit=crop&q=80&w=120",
     canSwim: true,
     noSeasick: true,
     medicalHistory: "Tidak ada riwayat penyakit",
-    medicalNotes: "Ahli survei rehabilitasi hutan bakau/mangrove di pesisir.",
+    medicalNotes: "Sehat walafiat, siap bertugas.",
     emergencyContactName: "Rudi Setiawan",
     emergencyContactRelation: "Kakak",
     emergencyContactPhone: "+62 815-9988-7711",
-    village: "Warloka Pesisir"
+    village: "Golo Mori"
   },
   {
     id: "M-115",
-    name: "Nina Kartika",
-    nim: "22/507442/PS/55567",
-    major: "Psikologi",
+    name: "Marcha Lorraine",
+    nim: "22/507442/SP/55567",
+    major: "Ilmu Komunikasi",
     phone: "+62 812-8899-7722",
     profilePic: "https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?auto=format&fit=crop&q=80&w=120",
     canSwim: true,
     noSeasick: true,
     medicalHistory: "Tidak ada riwayat penyakit",
-    medicalNotes: "Menjalankan program trauma healing dan bimbingan belajar anak pesisir.",
+    medicalNotes: "Sehat walafiat, siap bertugas.",
     emergencyContactName: "Sri Rahayu",
     emergencyContactRelation: "Ibu",
     emergencyContactPhone: "+62 813-7766-5544",
     village: "Warloka Pesisir"
   },
-  // Golo Mori (15 members)
   {
     id: "M-116",
-    name: "Adelia Siregar",
-    nim: "22/508553/GK/55678",
-    major: "Gizi Kesehatan",
+    name: "Cecelia Rinti Monica",
+    nim: "22/508553/SP/55678",
+    major: "Ilmu Komunikasi",
     phone: "+62 813-4455-9922",
     profilePic: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=120",
     canSwim: true,
     noSeasick: true,
     medicalHistory: "Tidak ada riwayat penyakit",
-    medicalNotes: "Kondisi prima. Penanggung jawab menu dapur mess Golo Mori.",
+    medicalNotes: "Sehat walafiat, siap bertugas.",
     emergencyContactName: "Roni Siregar",
     emergencyContactRelation: "Ayah",
     emergencyContactPhone: "+62 812-7766-4433",
@@ -267,31 +265,31 @@ const INITIAL_MEMBERS = [
   },
   {
     id: "M-117",
-    name: "Reza Fahlevi",
-    nim: "22/509664/KU/55789",
-    major: "Kedokteran",
+    name: "Nurani Alim Prasasti",
+    nim: "22/509664/PS/55789",
+    major: "Psikologi",
     phone: "+62 811-9988-7744",
-    profilePic: "https://images.unsplash.com/photo-1537368910025-700350fe46c7?auto=format&fit=crop&q=80&w=120",
+    profilePic: "https://images.unsplash.com/photo-1544725176-7c40e5a71c5e?auto=format&fit=crop&q=80&w=120",
     canSwim: true,
     noSeasick: true,
     medicalHistory: "Tidak ada riwayat penyakit",
-    medicalNotes: "Dokter posko. Membawa tas P3K lengkap di setiap kegiatan luar posko.",
+    medicalNotes: "Sehat walafiat, siap bertugas.",
     emergencyContactName: "Maimunah",
     emergencyContactRelation: "Ibu",
     emergencyContactPhone: "+62 812-9900-1122",
-    village: "Golo Mori"
+    village: "Warloka Pesisir"
   },
   {
     id: "M-118",
-    name: "Amalia Rizki",
-    nim: "22/510775/AK/55900",
-    major: "Arkeologi",
+    name: "Kania Azaliaputri Tofani",
+    nim: "22/510775/SP/55900",
+    major: "Sosiologi",
     phone: "+62 878-1122-3377",
     profilePic: "https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&q=80&w=120",
     canSwim: true,
     noSeasick: false,
-    medicalHistory: "Alergi debu",
-    medicalNotes: "Selalu sediakan masker saat melakukan ekskavasi/survei goa.",
+    medicalHistory: "Tidak ada riwayat penyakit",
+    medicalNotes: "Sehat walafiat, siap bertugas.",
     emergencyContactName: "Syarifuddin",
     emergencyContactRelation: "Ayah",
     emergencyContactPhone: "+62 813-8899-7766",
@@ -299,31 +297,31 @@ const INITIAL_MEMBERS = [
   },
   {
     id: "M-119",
-    name: "Dimas Nugraha",
-    nim: "22/511886/HK/56011",
-    major: "Hukum",
+    name: "Ajeng Mutiara Sholihah",
+    nim: "22/511886/SV/56011",
+    major: "Akuntansi Sektor Publik",
     phone: "+62 812-6677-4411",
-    profilePic: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&q=80&w=120",
+    profilePic: "https://images.unsplash.com/photo-1531123897727-8f129e1688ce?auto=format&fit=crop&q=80&w=120",
     canSwim: true,
     noSeasick: true,
     medicalHistory: "Tidak ada riwayat penyakit",
-    medicalNotes: "Penyuluhan hukum agraria bagi warga desa Golo Mori.",
+    medicalNotes: "Sehat walafiat, siap bertugas.",
     emergencyContactName: "Ratih Nugraha",
     emergencyContactRelation: "Ibu",
     emergencyContactPhone: "+62 811-4455-6677",
-    village: "Golo Mori"
+    village: "Warloka Pesisir"
   },
   {
     id: "M-120",
-    name: "Clarissa Putri",
-    nim: "22/512997/MN/56122",
-    major: "Manajemen",
+    name: "Maulana Iqbal Pambudi",
+    nim: "22/512997/PT/56122",
+    major: "Ilmu dan Industri Peternakan",
     phone: "+62 819-4433-2211",
-    profilePic: "https://images.unsplash.com/photo-1551836022-d5d88e9218df?auto=format&fit=crop&q=80&w=120",
+    profilePic: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&q=80&w=120",
     canSwim: false,
     noSeasick: false,
-    medicalHistory: "Vertigo ringan",
-    medicalNotes: "Hindari aktivitas dengan guncangan tinggi di atas perahu.",
+    medicalHistory: "Tidak ada riwayat penyakit",
+    medicalNotes: "Sehat walafiat, siap bertugas.",
     emergencyContactName: "Julianto",
     emergencyContactRelation: "Ayah",
     emergencyContactPhone: "+62 812-9988-7722",
@@ -331,31 +329,31 @@ const INITIAL_MEMBERS = [
   },
   {
     id: "M-121",
-    name: "Bayu Pamungkas",
-    nim: "22/514108/TE/56233",
-    major: "Teknik Elektro",
+    name: "Aulia Rafif Rahmadana",
+    nim: "22/514108/KT/56233",
+    major: "Kehutanan",
     phone: "+62 813-7788-9911",
-    profilePic: "https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&q=80&w=120",
+    profilePic: "https://images.unsplash.com/photo-1500048993953-d23a436266cf?auto=format&fit=crop&q=80&w=120",
     canSwim: true,
     noSeasick: true,
     medicalHistory: "Tidak ada riwayat penyakit",
-    medicalNotes: "Instalasi panel surya mandiri untuk penerangan jalan desa Golo Mori.",
+    medicalNotes: "Sehat walafiat, siap bertugas.",
     emergencyContactName: "Sudirman",
     emergencyContactRelation: "Ayah",
     emergencyContactPhone: "+62 812-3344-5599",
-    village: "Golo Mori"
+    village: "Warloka Pesisir"
   },
   {
     id: "M-122",
-    name: "Hana Safitri",
-    nim: "22/515219/IK/56344",
-    major: "Ilmu Komunikasi",
+    name: "Selda Puja Ningtyas",
+    nim: "22/515219/PN/56344",
+    major: "Akuakultur",
     phone: "+62 878-8877-6655",
-    profilePic: "https://images.unsplash.com/photo-1531123897727-8f129e1688ce?auto=format&fit=crop&q=80&w=120",
+    profilePic: "https://images.unsplash.com/photo-1534751516642-a131ffa10615?auto=format&fit=crop&q=80&w=120",
     canSwim: true,
     noSeasick: true,
-    medicalHistory: "Maag",
-    medicalNotes: "Hindari makanan pedas berlebih saat makan bersama warga.",
+    medicalHistory: "Tidak ada riwayat penyakit",
+    medicalNotes: "Sehat walafiat, siap bertugas.",
     emergencyContactName: "Linda Safitri",
     emergencyContactRelation: "Ibu",
     emergencyContactPhone: "+62 813-4455-0011",
@@ -363,31 +361,31 @@ const INITIAL_MEMBERS = [
   },
   {
     id: "M-123",
-    name: "Fahmi Idris",
-    nim: "22/516330/TI/56455",
-    major: "Teknik Industri",
+    name: "Serafim Ngenanta Tarigan",
+    nim: "22/516330/PN/56455",
+    major: "Agronomi",
     phone: "+62 857-7788-9944",
-    profilePic: "https://images.unsplash.com/photo-1519345182560-3f2917c472ef?auto=format&fit=crop&q=80&w=120",
+    profilePic: "https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?auto=format&fit=crop&q=80&w=120",
     canSwim: false,
     noSeasick: true,
     medicalHistory: "Tidak ada riwayat penyakit",
-    medicalNotes: "Optimasi alur distribusi kerajinan tangan khas warga lokal.",
+    medicalNotes: "Sehat walafiat, siap bertugas.",
     emergencyContactName: "Syamsul Idris",
     emergencyContactRelation: "Ayah",
     emergencyContactPhone: "+62 812-4455-8899",
-    village: "Golo Mori"
+    village: "Warloka Pesisir"
   },
   {
     id: "M-124",
-    name: "Indah Permata",
-    nim: "22/517441/SA/56566",
-    major: "Sastra Inggris",
+    name: "Kaylila Nisa",
+    nim: "22/517441/KH/56566",
+    major: "Kedokteran Hewan",
     phone: "+62 812-9900-5566",
-    profilePic: "https://images.unsplash.com/photo-1544725176-7c40e5a71c5e?auto=format&fit=crop&q=80&w=120",
+    profilePic: "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&q=80&w=120",
     canSwim: true,
     noSeasick: true,
     medicalHistory: "Tidak ada riwayat penyakit",
-    medicalNotes: "Mengajar kelas bahasa Inggris pariwisata untuk pemuda pemudi Golo Mori.",
+    medicalNotes: "Sehat walafiat, siap bertugas.",
     emergencyContactName: "Purnomo",
     emergencyContactRelation: "Ayah",
     emergencyContactPhone: "+62 813-7766-3322",
@@ -395,31 +393,31 @@ const INITIAL_MEMBERS = [
   },
   {
     id: "M-125",
-    name: "Kevin Sanjaya",
-    nim: "22/518552/PW/56677",
-    major: "Pembangunan Wilayah",
+    name: "Meutia Wigi Liestyana",
+    nim: "22/518552/TP/56677",
+    major: "Teknologi Pangan dan Hasil Pertanian",
     phone: "+62 819-2211-0033",
-    profilePic: "https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?auto=format&fit=crop&q=80&w=120",
+    profilePic: "https://images.unsplash.com/photo-1551836022-d5d88e9218df?auto=format&fit=crop&q=80&w=120",
     canSwim: true,
     noSeasick: true,
     medicalHistory: "Tidak ada riwayat penyakit",
-    medicalNotes: "Pemetaan potensi wisata bahari di sekitar kawasan Golo Mori.",
+    medicalNotes: "Sehat walafiat, siap bertugas.",
     emergencyContactName: "Hariyanto",
     emergencyContactRelation: "Ayah",
     emergencyContactPhone: "+62 812-3344-9988",
-    village: "Golo Mori"
+    village: "Warloka Pesisir"
   },
   {
     id: "M-126",
-    name: "Mutiara Hati",
-    nim: "22/519663/KH/56788",
-    major: "Kedokteran Hewan",
+    name: "Athira Fairuzuma Arief",
+    nim: "22/519663/KG/56788",
+    major: "Kedokteran Gigi",
     phone: "+62 878-4433-2299",
-    profilePic: "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&q=80&w=120",
+    profilePic: "https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?auto=format&fit=crop&q=80&w=120",
     canSwim: true,
     noSeasick: false,
     medicalHistory: "Tidak ada riwayat penyakit",
-    medicalNotes: "Pemeriksaan kesehatan ternak sapi warga di dataran Golo Mori.",
+    medicalNotes: "Sehat walafiat, siap bertugas.",
     emergencyContactName: "Endang",
     emergencyContactRelation: "Ibu",
     emergencyContactPhone: "+62 813-1122-3388",
@@ -427,31 +425,31 @@ const INITIAL_MEMBERS = [
   },
   {
     id: "M-127",
-    name: "Pandu Dewanata",
-    nim: "22/520774/GL/56899",
-    major: "Geografi Lingkungan",
+    name: "Hanifa Pradhipta Aulia Putri",
+    nim: "22/520774/KG/56899",
+    major: "Kedokteran Gigi",
     phone: "+62 812-7788-5544",
-    profilePic: "https://images.unsplash.com/photo-1501196354995-cbb51c65aaea?auto=format&fit=crop&q=80&w=120",
+    profilePic: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=120",
     canSwim: true,
     noSeasick: true,
-    medicalHistory: "Alergi gigitan serangga",
-    medicalNotes: "Wajib membawa lotion anti serangga saat turun ke lapangan.",
+    medicalHistory: "Tidak ada riwayat penyakit",
+    medicalNotes: "Sehat walafiat, siap bertugas.",
     emergencyContactName: "Prabowo",
     emergencyContactRelation: "Ayah",
     emergencyContactPhone: "+62 812-9988-2211",
-    village: "Golo Mori"
+    village: "Warloka Pesisir"
   },
   {
     id: "M-128",
-    name: "Sarah Azhari",
-    nim: "22/521885/KM/57010",
-    major: "Kimia",
+    name: "Dyah Puspita Ningrum",
+    nim: "22/521885/FA/57010",
+    major: "Farmasi",
     phone: "+62 813-3344-5511",
-    profilePic: "https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?auto=format&fit=crop&q=80&w=120",
+    profilePic: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=120",
     canSwim: false,
     noSeasick: false,
-    medicalHistory: "Asma ringan",
-    medicalNotes: "Selalu sedia inhaler di saku jaket lapangan.",
+    medicalHistory: "Tidak ada riwayat penyakit",
+    medicalNotes: "Sehat walafiat, siap bertugas.",
     emergencyContactName: "Farida",
     emergencyContactRelation: "Ibu",
     emergencyContactPhone: "+62 811-5566-7788",
@@ -459,31 +457,31 @@ const INITIAL_MEMBERS = [
   },
   {
     id: "M-129",
-    name: "Taufik Hidayat",
-    nim: "22/522996/TN/57121",
-    major: "Teknik Nuklir",
+    name: "Rizky Aulia Maharani",
+    nim: "22/522996/KU/57121",
+    major: "Gizi",
     phone: "+62 812-5566-4433",
-    profilePic: "https://images.unsplash.com/photo-1504257486388-941f3d868718?auto=format&fit=crop&q=80&w=120",
+    profilePic: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&q=80&w=120",
     canSwim: true,
     noSeasick: true,
     medicalHistory: "Tidak ada riwayat penyakit",
-    medicalNotes: "Membantu edukasi teknologi tepat guna berbasis sains.",
+    medicalNotes: "Sehat walafiat, siap bertugas.",
     emergencyContactName: "Hidayat",
     emergencyContactRelation: "Ayah",
     emergencyContactPhone: "+62 812-7788-9900",
-    village: "Golo Mori"
+    village: "Warloka Pesisir"
   },
   {
     id: "M-130",
-    name: "Yuni Shara",
-    nim: "22/524107/AK/57232",
-    major: "Akuntansi",
+    name: "Cika Golda Putri Ame",
+    nim: "22/524107/KU/57232",
+    major: "Kedokteran Umum",
     phone: "+62 819-7788-6655",
-    profilePic: "https://images.unsplash.com/photo-1534751516642-a131ffa10615?auto=format&fit=crop&q=80&w=120",
+    profilePic: "https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&q=80&w=120",
     canSwim: true,
     noSeasick: true,
-    medicalHistory: "Gastritis",
-    medicalNotes: "Pastikan makan pagi sebelum memulai pendataan pembukuan posko.",
+    medicalHistory: "Tidak ada riwayat penyakit",
+    medicalNotes: "Sehat walafiat, siap bertugas.",
     emergencyContactName: "Syahrini",
     emergencyContactRelation: "Kakak",
     emergencyContactPhone: "+62 813-8877-6655",
@@ -532,6 +530,21 @@ export default function Anggota() {
   const [formEmergencyRelation, setFormEmergencyRelation] = useState("Ibu");
   const [formEmergencyPhone, setFormEmergencyPhone] = useState("");
   const [formVillage, setFormVillage] = useState("Warloka Pesisir");
+  const [formPhoto, setFormPhoto] = useState(null);
+  const [formPhotoPreview, setFormPhotoPreview] = useState(null);
+
+  const handleFormPhotoChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setFormPhoto(file);
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setFormPhotoPreview(reader.result);
+      };
+      reader.readAsDataURL(file);
+      triggerToast("Foto profil berhasil dilampirkan!", "success");
+    }
+  };
 
   const itemsPerPage = 15;
 
@@ -752,6 +765,8 @@ export default function Anggota() {
     setFormEmergencyRelation("Ibu");
     setFormEmergencyPhone("");
     setFormVillage("Warloka Pesisir");
+    setFormPhoto(null);
+    setFormPhotoPreview(null);
     setShowAddModal(true);
   };
 
@@ -764,7 +779,7 @@ export default function Anggota() {
 
     setIsLoading(true);
     const randomAvatarNum = Math.floor(Math.random() * 70) + 10;
-    const avatarUrl = `https://i.pravatar.cc/150?img=${randomAvatarNum}`;
+    const avatarUrl = formPhotoPreview || `https://i.pravatar.cc/150?img=${randomAvatarNum}`;
 
     const extra = {
       nim: formNim,
@@ -841,6 +856,8 @@ export default function Anggota() {
     setFormEmergencyRelation(member.emergencyContactRelation);
     setFormEmergencyPhone(member.emergencyContactPhone);
     setFormVillage(member.village || "Warloka Pesisir");
+    setFormPhoto(null);
+    setFormPhotoPreview(member.profilePic || null);
     setShowEditModal(true);
   };
 
@@ -852,9 +869,10 @@ export default function Anggota() {
     }
 
     setIsLoading(true);
+    const avatarUrl = formPhotoPreview || selectedMember.profilePic || `https://i.pravatar.cc/150?img=${Math.floor(Math.random() * 70) + 10}`;
     const extra = {
       nim: formNim,
-      profilePic: selectedMember.profilePic,
+      profilePic: avatarUrl,
       canSwim: formCanSwim,
       noSeasick: formNoSeasick,
       medicalHistory: formMedicalHistory,
@@ -884,6 +902,7 @@ export default function Anggota() {
         nim: formNim,
         major: formMajor,
         phone: formPhone,
+        profilePic: avatarUrl,
         canSwim: formCanSwim,
         noSeasick: formNoSeasick,
         medicalHistory: formMedicalHistory,
@@ -1783,6 +1802,29 @@ export default function Anggota() {
             <form onSubmit={handleAddSubmit}>
               <div className="p-8 max-h-[70vh] overflow-y-auto flex flex-col gap-5 text-xs text-slate-700">
                 
+                {/* Photo Upload Section */}
+                <div className="flex flex-col sm:flex-row items-center gap-5 bg-slate-50 p-4.5 rounded-2xl border border-slate-100/60">
+                  <div className="relative w-20 h-20 rounded-full overflow-hidden border-2 border-emerald-500/30 shrink-0 bg-white shadow-inner flex items-center justify-center">
+                    {formPhotoPreview ? (
+                      <img alt="Preview" className="w-full h-full object-cover" src={formPhotoPreview} />
+                    ) : (
+                      <span className="material-symbols-outlined text-slate-300 text-3xl">person</span>
+                    )}
+                  </div>
+                  <div className="flex flex-col gap-2 w-full">
+                    <label className="font-bold text-slate-500 uppercase tracking-wider">Foto Profil</label>
+                    <div className="relative flex items-center">
+                      <input 
+                        type="file" 
+                        accept="image/*"
+                        onChange={handleFormPhotoChange}
+                        className="w-full text-xs text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-emerald-50 file:text-emerald-700 hover:file:bg-emerald-100 cursor-pointer"
+                      />
+                    </div>
+                    <p className="text-[10px] text-slate-400 font-medium">Unggah foto profil anggota (Maks. 2MB, format JPG/PNG)</p>
+                  </div>
+                </div>
+
                 {/* Personal Info Grid */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
@@ -1813,20 +1855,14 @@ export default function Anggota() {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
                     <label className="block font-bold text-slate-500 mb-1.5 uppercase tracking-wider">Program Studi *</label>
-                    <select 
+                    <input 
+                      required
+                      type="text" 
+                      placeholder="Masukkan nama Program Studi"
                       value={formMajor}
                       onChange={(e) => setFormMajor(e.target.value)}
-                      className="w-full bg-slate-50 border border-slate-200 rounded-xl py-2.5 px-4 text-xs focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all"
-                    >
-                      <option value="Teknik Kelautan">Teknik Kelautan</option>
-                      <option value="Teknik Geologi">Teknik Geologi</option>
-                      <option value="Ilmu Kelautan">Ilmu Kelautan</option>
-                      <option value="Teknik Mesin">Teknik Mesin</option>
-                      <option value="Teknik Sipil">Teknik Sipil</option>
-                      <option value="Teknik Lingkungan">Teknik Lingkungan</option>
-                      <option value="Biologi">Biologi</option>
-                      <option value="Teknik Geofisika">Teknik Geofisika</option>
-                    </select>
+                      className="w-full bg-slate-50 border border-slate-200 rounded-xl py-2.5 px-4 text-xs focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all text-slate-800"
+                    />
                   </div>
 
                   <div>
@@ -1991,6 +2027,29 @@ export default function Anggota() {
             <form onSubmit={handleEditSubmit}>
               <div className="p-8 max-h-[70vh] overflow-y-auto flex flex-col gap-5 text-xs text-slate-700">
                 
+                {/* Photo Upload Section */}
+                <div className="flex flex-col sm:flex-row items-center gap-5 bg-slate-50 p-4.5 rounded-2xl border border-slate-100/60">
+                  <div className="relative w-20 h-20 rounded-full overflow-hidden border-2 border-emerald-500/30 shrink-0 bg-white shadow-inner flex items-center justify-center">
+                    {formPhotoPreview ? (
+                      <img alt="Preview" className="w-full h-full object-cover" src={formPhotoPreview} />
+                    ) : (
+                      <span className="material-symbols-outlined text-slate-300 text-3xl">person</span>
+                    )}
+                  </div>
+                  <div className="flex flex-col gap-2 w-full">
+                    <label className="font-bold text-slate-500 uppercase tracking-wider">Foto Profil</label>
+                    <div className="relative flex items-center">
+                      <input 
+                        type="file" 
+                        accept="image/*"
+                        onChange={handleFormPhotoChange}
+                        className="w-full text-xs text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-emerald-50 file:text-emerald-700 hover:file:bg-emerald-100 cursor-pointer"
+                      />
+                    </div>
+                    <p className="text-[10px] text-slate-400 font-medium">Unggah foto profil anggota (Maks. 2MB, format JPG/PNG)</p>
+                  </div>
+                </div>
+
                 {/* Personal Info Grid */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
@@ -2019,20 +2078,14 @@ export default function Anggota() {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
                     <label className="block font-bold text-slate-500 mb-1.5 uppercase tracking-wider">Program Studi *</label>
-                    <select 
+                    <input 
+                      required
+                      type="text" 
+                      placeholder="Masukkan nama Program Studi"
                       value={formMajor}
                       onChange={(e) => setFormMajor(e.target.value)}
-                      className="w-full bg-slate-50 border border-slate-200 rounded-xl py-2.5 px-4 text-xs focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all"
-                    >
-                      <option value="Teknik Kelautan">Teknik Kelautan</option>
-                      <option value="Teknik Geologi">Teknik Geologi</option>
-                      <option value="Ilmu Kelautan">Ilmu Kelautan</option>
-                      <option value="Teknik Mesin">Teknik Mesin</option>
-                      <option value="Teknik Sipil">Teknik Sipil</option>
-                      <option value="Teknik Lingkungan">Teknik Lingkungan</option>
-                      <option value="Biologi">Biologi</option>
-                      <option value="Teknik Geofisika">Teknik Geofisika</option>
-                    </select>
+                      className="w-full bg-slate-50 border border-slate-200 rounded-xl py-2.5 px-4 text-xs focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all text-slate-800"
+                    />
                   </div>
 
                   <div>

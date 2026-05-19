@@ -24,6 +24,12 @@ export default function Home() {
     totalInjury: 0,
     warlokaCount: 15,
     goloMoriCount: 15,
+    warlokaHealthy: 15,
+    warlokaSick: 0,
+    warlokaInjury: 0,
+    goloMoriHealthy: 15,
+    goloMoriSick: 0,
+    goloMoriInjury: 0,
     recentIncidents: [
       { id: "INC-4492", reporter: "Budi Darmawan", location: "Gudang Penyimpanan Sektor A", type: "Terpeleset Ringan", status: "Terselesaikan", severity: "medium" },
       { id: "INC-4490", reporter: "Siti Nurbaya", location: "Pembangkit Listrik Sektor 2", type: "Kelelahan Panas", status: "Dalam Proses", severity: "emergency" },
@@ -53,19 +59,35 @@ export default function Home() {
         let totalInjury = 0;
         let warlokaCount = 15;
         let goloMoriCount = 15;
+        let warlokaHealthy = 15;
+        let warlokaSick = 0;
+        let warlokaInjury = 0;
+        let goloMoriHealthy = 15;
+        let goloMoriSick = 0;
+        let goloMoriInjury = 0;
         let recentIncidents = stats.recentIncidents;
 
         if (members && members.length > 0) {
           totalMembers = members.length;
           
-          // Count by posko
-          warlokaCount = members.filter(m => (m.posko || m.village) === "Warloka Pesisir").length;
-          goloMoriCount = members.filter(m => (m.posko || m.village) === "Golo Mori").length;
+          // Filter by village
+          const warlokaMembers = members.filter(m => (m.posko || m.village) === "Warloka Pesisir");
+          const goloMoriMembers = members.filter(m => (m.posko || m.village) === "Golo Mori");
 
-          // Count by kondisi
-          totalHealthy = members.filter(m => m.kondisi === "Sehat" || m.kondisi === "Fit").length;
-          totalSick = members.filter(m => m.kondisi === "Sakit" || m.kondisi === "Kurang Sehat").length;
-          totalInjury = members.filter(m => m.kondisi === "Cedera" || m.kondisi === "Luka" || m.kondisi === "Cedera Ringan").length;
+          warlokaCount = warlokaMembers.length;
+          goloMoriCount = goloMoriMembers.length;
+
+          warlokaHealthy = warlokaMembers.filter(m => m.kondisi === "Sehat" || m.kondisi === "Fit").length;
+          warlokaSick = warlokaMembers.filter(m => m.kondisi === "Sakit" || m.kondisi === "Kurang Sehat").length;
+          warlokaInjury = warlokaMembers.filter(m => m.kondisi === "Cedera" || m.kondisi === "Luka" || m.kondisi === "Cedera Ringan").length;
+
+          goloMoriHealthy = goloMoriMembers.filter(m => m.kondisi === "Sehat" || m.kondisi === "Fit").length;
+          goloMoriSick = goloMoriMembers.filter(m => m.kondisi === "Sakit" || m.kondisi === "Kurang Sehat").length;
+          goloMoriInjury = goloMoriMembers.filter(m => m.kondisi === "Cedera" || m.kondisi === "Luka" || m.kondisi === "Cedera Ringan").length;
+
+          totalHealthy = warlokaHealthy + goloMoriHealthy;
+          totalSick = warlokaSick + goloMoriSick;
+          totalInjury = warlokaInjury + goloMoriInjury;
         }
 
         if (incidents && incidents.length > 0) {
@@ -104,6 +126,12 @@ export default function Home() {
           totalInjury,
           warlokaCount,
           goloMoriCount,
+          warlokaHealthy,
+          warlokaSick,
+          warlokaInjury,
+          goloMoriHealthy,
+          goloMoriSick,
+          goloMoriInjury,
           recentIncidents
         });
 
@@ -434,14 +462,52 @@ export default function Home() {
                 </h3>
 
                 <div className="flex-1 flex flex-col justify-center gap-3.5">
-                  <div className="bg-emerald-50/50 border border-emerald-100/50 rounded-xl p-3.5 hover:shadow-sm transition-shadow">
-                    <h4 className="font-bold text-xs text-emerald-800 leading-tight">Posko Warloka Pesisir</h4>
-                    <p className="text-[11px] text-emerald-600 mt-1 font-medium">{stats.warlokaCount} Anggota Aktif • Aman & Sehat.</p>
+                  <div className={`rounded-xl p-3.5 hover:shadow-sm transition-shadow border ${
+                    (stats.warlokaSick > 0 || stats.warlokaInjury > 0)
+                      ? "bg-amber-50/50 border-amber-200/50"
+                      : "bg-emerald-50/50 border-emerald-100/50"
+                  }`}>
+                    <h4 className={`font-bold text-xs leading-tight ${
+                      (stats.warlokaSick > 0 || stats.warlokaInjury > 0) ? "text-amber-800" : "text-emerald-800"
+                    }`}>Posko Warloka Pesisir</h4>
+                    <p className={`text-[11px] mt-1 font-semibold ${
+                      (stats.warlokaSick > 0 || stats.warlokaInjury > 0) ? "text-amber-700" : "text-emerald-600"
+                    }`}>
+                      {stats.warlokaCount} Anggota Aktif • {" "}
+                      {(stats.warlokaSick > 0 || stats.warlokaInjury > 0) ? (
+                        <span>
+                          {stats.warlokaHealthy} Sehat
+                          {stats.warlokaSick > 0 && `, ${stats.warlokaSick} Sakit`}
+                          {stats.warlokaInjury > 0 && `, ${stats.warlokaInjury} Cedera`}
+                        </span>
+                      ) : (
+                        "Aman & Sehat."
+                      )}
+                    </p>
                   </div>
 
-                  <div className="bg-emerald-50/50 border border-emerald-100/50 rounded-xl p-3.5 hover:shadow-sm transition-shadow">
-                    <h4 className="font-bold text-xs text-emerald-800 leading-tight">Posko Golo Mori</h4>
-                    <p className="text-[11px] text-emerald-600 mt-1 font-medium">{stats.goloMoriCount} Anggota Aktif • Aman & Sehat.</p>
+                  <div className={`rounded-xl p-3.5 hover:shadow-sm transition-shadow border ${
+                    (stats.goloMoriSick > 0 || stats.goloMoriInjury > 0)
+                      ? "bg-amber-50/50 border-amber-200/50"
+                      : "bg-emerald-50/50 border-emerald-100/50"
+                  }`}>
+                    <h4 className={`font-bold text-xs leading-tight ${
+                      (stats.goloMoriSick > 0 || stats.goloMoriInjury > 0) ? "text-amber-800" : "text-emerald-800"
+                    }`}>Posko Golo Mori</h4>
+                    <p className={`text-[11px] mt-1 font-semibold ${
+                      (stats.goloMoriSick > 0 || stats.goloMoriInjury > 0) ? "text-amber-700" : "text-emerald-600"
+                    }`}>
+                      {stats.goloMoriCount} Anggota Aktif • {" "}
+                      {(stats.goloMoriSick > 0 || stats.goloMoriInjury > 0) ? (
+                        <span>
+                          {stats.goloMoriHealthy} Sehat
+                          {stats.goloMoriSick > 0 && `, ${stats.goloMoriSick} Sakit`}
+                          {stats.goloMoriInjury > 0 && `, ${stats.goloMoriInjury} Cedera`}
+                        </span>
+                      ) : (
+                        "Aman & Sehat."
+                      )}
+                    </p>
                   </div>
                 </div>
               </div>
