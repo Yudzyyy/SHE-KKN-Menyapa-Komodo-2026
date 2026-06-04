@@ -234,15 +234,7 @@ export default function AktivitasPage() {
         </button>
 
         <div className="px-3 mb-10">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-2xl bg-gradient-to-br from-emerald-400 to-teal-500 flex items-center justify-center text-white font-extrabold text-xl shadow-lg shadow-emerald-500/20">
-              S
-            </div>
-            <div>
-              <h1 className="font-bold text-[15px] text-slate-900 leading-tight tracking-wide font-poppins">SHE Monitoring</h1>
-              <p className="text-[10px] text-emerald-600 font-semibold tracking-normal mt-0.5 leading-snug">KKN PPM UGM Menyapa Komodo 2026</p>
-            </div>
-          </div>
+          <img src="/logo.png" alt="SHE Logo" className="h-12 w-auto object-contain" />
         </div>
 
         <nav className="flex-1 flex flex-col gap-2 overflow-y-auto">
@@ -290,48 +282,6 @@ export default function AktivitasPage() {
           </div>
 
           <div className="flex items-center gap-5">
-            {/* Notification bell */}
-            <button className="text-slate-500 hover:text-emerald-600 hover:bg-slate-50 transition-all rounded-full p-2.5 relative border border-slate-100">
-              <span className="material-symbols-outlined text-xl">notifications</span>
-              <span className="absolute top-2 right-2 w-2 h-2 bg-rose-500 rounded-full ring-2 ring-white"></span>
-            </button>
-            
-            {/* Avatar Admin with interactive Dropdown */}
-            <div className="relative">
-              <button 
-                onClick={() => setShowProfileDropdown(!showProfileDropdown)}
-                className="flex items-center gap-2.5 p-1.5 rounded-full hover:bg-slate-50 border border-slate-100 transition-all focus:outline-none"
-              >
-                <div className="w-9 h-9 rounded-full overflow-hidden border border-emerald-500/30">
-                  <img 
-                    alt="Admin Profile" 
-                    className="w-full h-full object-cover" 
-                    src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=120" 
-                  />
-                </div>
-                <span className="font-semibold text-xs text-slate-700 pr-2 hidden md:block">Adelia Siregar</span>
-                <span className="material-symbols-outlined text-slate-400 text-sm hidden md:block">keyboard_arrow_down</span>
-              </button>
-
-              {showProfileDropdown && (
-                <div className="absolute right-0 mt-3 w-52 bg-white rounded-xl shadow-[0_10px_40px_rgba(0,0,0,0.12)] border border-slate-100 py-2.5 z-50 animate-fade-in">
-                  <div className="px-4.5 py-2.5 border-b border-slate-50 mb-1.5">
-                    <p className="font-bold text-sm text-slate-800">Adelia Siregar</p>
-                    <p className="text-[11px] text-slate-400">Koordinator SHE Lapangan</p>
-                  </div>
-                  <a href="#" className="flex items-center gap-2.5 px-4.5 py-2 text-xs text-slate-600 hover:bg-emerald-50 hover:text-emerald-700 transition-colors">
-                    <span className="material-symbols-outlined text-base">person</span> Profil Saya
-                  </a>
-                  <a href="#" className="flex items-center gap-2.5 px-4.5 py-2 text-xs text-slate-600 hover:bg-emerald-50 hover:text-emerald-700 transition-colors">
-                    <span className="material-symbols-outlined text-base">security</span> Kebijakan Privasi
-                  </a>
-                  <hr className="my-1.5 border-slate-100" />
-                  <a href="#" className="flex items-center gap-2.5 px-4.5 py-2 text-xs text-rose-600 hover:bg-rose-50 transition-colors">
-                    <span className="material-symbols-outlined text-base">logout</span> Logout
-                  </a>
-                </div>
-              )}
-            </div>
           </div>
         </header>
 

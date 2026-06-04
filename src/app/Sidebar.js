@@ -16,19 +16,7 @@ export default function Sidebar() {
   return (
     <aside className="hidden lg:flex fixed inset-y-0 left-0 top-0 h-screen w-[260px] z-50 bg-white shadow-[0_8px_30px_rgb(0,0,0,0.02)] flex-col py-8 px-4 border-r border-slate-100">
       <div className="px-3 mb-10">
-        <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-2xl bg-gradient-to-br from-emerald-400 to-teal-500 flex items-center justify-center text-white font-extrabold text-xl shadow-lg shadow-emerald-500/20">
-            S
-          </div>
-          <div>
-            <h1 className="font-bold text-[15px] text-slate-900 leading-tight tracking-wide" style={{ fontFamily: 'Poppins, sans-serif' }}>
-              SHE Monitoring
-            </h1>
-            <p className="text-[10px] text-emerald-600 font-semibold tracking-normal mt-0.5 leading-snug">
-              KKN PPM UGM Menyapa Komodo 2026
-            </p>
-          </div>
-        </div>
+        <img src="/logo.png" alt="SHE Logo" className="h-12 w-auto object-contain" />
       </div>
       <nav className="flex-1 flex flex-col gap-1 overflow-y-auto">
         <Link className={linkClass("/")} href="/">
