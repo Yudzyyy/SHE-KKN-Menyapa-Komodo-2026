@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useMemo } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { supabase } from '@/utils/supabaseClient';
 import Navigation from '../../components/Navigation';
 
@@ -226,7 +227,7 @@ export default function KesehatanPage() {
         </button>
 
         <div className="px-3 mb-10">
-          <img src="/logo.png" alt="SHE Logo" className="h-12 w-auto object-contain" />
+          <Image src="/logo.png" alt="SHE Logo" width={120} height={48} className="h-12 w-auto object-contain" priority />
         </div>
 
         <nav className="flex-1 flex flex-col gap-2 overflow-y-auto">
@@ -373,7 +374,7 @@ export default function KesehatanPage() {
           </div>
 
           {/* Filters and List */}
-          <div className="flex flex-col gap-5">
+          <div className="flex flex-col gap-6 mt-4">
             <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
               <div className="relative w-full md:max-w-xs">
                 <span className="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-slate-400">search</span>
@@ -401,80 +402,89 @@ export default function KesehatanPage() {
               </div>
             </div>
 
-            {/* List Table / Grid */}
-            <div className="bg-white rounded-3xl border border-slate-100 shadow-[0_4px_25px_rgba(0,0,0,0.02)] overflow-hidden">
-              <div className="overflow-x-auto">
-                <table className="w-full text-left border-collapse min-w-full">
-                  <thead>
-                    <tr className="bg-slate-50/80 border-b border-slate-100/80 text-[11px] font-bold text-slate-400 uppercase tracking-wider">
-                      <th className="px-6 py-4">Profil Anggota</th>
-                      <th className="px-4 py-4 w-40">Status Kesehatan</th>
-                      <th className="px-4 py-4 w-60">Riwayat Penyakit</th>
-                      <th className="px-4 py-4 max-w-xs">Catatan Medis Saat Ini</th>
-                      <th className="px-6 py-4 text-center w-32">Aksi</th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-slate-50">
-                    {isLoading ? (
-                      Array.from({ length: 5 }).map((_, idx) => (
-                        <tr key={idx} className="animate-pulse">
-                          <td className="px-6 py-4"><div className="flex items-center gap-3"><div className="w-10 h-10 bg-slate-100 rounded-full"></div><div className="h-4 bg-slate-100 rounded w-32"></div></div></td>
-                          <td className="px-4 py-4"><div className="h-6 w-20 bg-slate-100 rounded-full"></div></td>
-                          <td className="px-4 py-4"><div className="h-4 bg-slate-100 rounded w-full"></div></td>
-                          <td className="px-4 py-4"><div className="h-4 bg-slate-100 rounded w-full"></div></td>
-                          <td className="px-6 py-4 text-center"><div className="h-8 w-8 bg-slate-100 rounded-xl mx-auto"></div></td>
-                        </tr>
-                      ))
-                    ) : filteredMembers.length > 0 ? (
-                      filteredMembers.map((member) => (
-                        <tr key={member.id} className="hover:bg-slate-50/40 transition-colors group">
-                          <td className="px-6 py-4">
-                            <div className="flex items-center gap-3.5">
-                              <img src={member.profilePic} alt={member.name} className="w-10 h-10 rounded-full object-cover border border-slate-200 shadow-sm" />
-                              <div>
-                                <h4 className="font-poppins font-bold text-xs text-slate-800">{member.name}</h4>
-                                <span className="text-[10px] text-slate-500 font-medium flex items-center gap-1 mt-0.5">
-                                  <span className="material-symbols-outlined text-[10px]">location_on</span>
-                                  {member.posko}
-                                </span>
-                              </div>
-                            </div>
-                          </td>
-                          <td className="px-4 py-4">
-                            {getKondisiBadge(member.kondisi)}
-                          </td>
-                          <td className="px-4 py-4">
-                            <div className="text-[11px] font-semibold text-slate-600 bg-slate-50 px-3 py-2 rounded-xl border border-slate-100">
-                              {member.medicalHistory}
-                            </div>
-                          </td>
-                          <td className="px-4 py-4 max-w-xs">
-                            <p className="text-[11px] text-slate-500 leading-relaxed truncate group-hover:whitespace-normal group-hover:overflow-visible transition-all">
-                              {member.medicalNotes}
-                            </p>
-                          </td>
-                          <td className="px-6 py-4 text-center">
-                            <button 
-                              onClick={() => openUpdateModal(member)}
-                              className="w-8 h-8 rounded-xl bg-white border border-slate-200 text-slate-400 hover:text-emerald-600 hover:border-emerald-200 hover:bg-emerald-50 flex items-center justify-center transition-all mx-auto shadow-sm"
-                              title="Update Status Medis"
-                            >
-                              <span className="material-symbols-outlined text-sm">edit_note</span>
-                            </button>
-                          </td>
-                        </tr>
-                      ))
-                    ) : (
-                      <tr>
-                        <td colSpan="5" className="px-6 py-10 text-center">
-                          <span className="material-symbols-outlined text-4xl text-slate-300 mb-2">medical_information</span>
-                          <p className="text-xs font-semibold text-slate-500">Tidak ada anggota yang ditemukan dengan status ini.</p>
-                        </td>
-                      </tr>
-                    )}
-                  </tbody>
-                </table>
-              </div>
+            {/* Cards Layout - Responsive untuk Desktop dan Mobile */}
+            <div className="p-4 md:p-6 flex flex-col gap-4 md:grid md:grid-cols-2 lg:grid-cols-3 auto-rows-max">
+              {isLoading ? (
+                Array.from({ length: 6 }).map((_, idx) => (
+                  <div key={idx} className="animate-pulse bg-white border border-slate-100 rounded-2xl p-5 flex flex-col gap-3.5 h-fit">
+                    <div className="flex gap-3">
+                      <div className="w-11 h-11 bg-slate-100 rounded-full flex-shrink-0" />
+                      <div className="flex-1">
+                        <div className="h-4 bg-slate-100 rounded w-32 mb-1.5" />
+                        <div className="h-3 bg-slate-100 rounded w-44" />
+                      </div>
+                    </div>
+                    <div className="h-6 bg-slate-100 rounded-full w-24" />
+                    <div className="h-8 bg-slate-100 rounded-xl w-full" />
+                    <div className="h-8 bg-slate-100 rounded-xl w-full" />
+                    <div className="flex justify-end gap-2 mt-2">
+                      <div className="w-8 h-8 bg-slate-100 rounded-lg" />
+                    </div>
+                  </div>
+                ))
+              ) : filteredMembers.length > 0 ? (
+                filteredMembers.map((member) => (
+                  <div 
+                    key={member.id}
+                    className="bg-white border border-slate-100 rounded-2xl p-5 shadow-sm hover:shadow-lg transition-all duration-300 flex flex-col gap-3.5 group h-fit"
+                  >
+                    {/* Header dengan profil */}
+                    <div className="flex items-start gap-3">
+                      <div className="w-11 h-11 rounded-full overflow-hidden border-2 border-emerald-500/20 shadow-sm flex-shrink-0">
+                        <Image alt={member.name} className="w-full h-full object-cover" src={member.profilePic} width={44} height={44} unoptimized />
+                      </div>
+                      <div className="flex-1">
+                        <h3 className="font-bold text-sm text-slate-800 font-poppins leading-tight line-clamp-2">
+                          {member.name}
+                        </h3>
+                        <p className="text-[10px] text-slate-500 font-medium flex items-center gap-1 mt-1.5">
+                          <span className="material-symbols-outlined text-[10px]">location_on</span>
+                          {member.posko}
+                        </p>
+                      </div>
+                    </div>
+
+                    {/* Status Kesehatan Badge */}
+                    <div className="pt-2">
+                      <p className="text-[10px] text-slate-400 font-bold uppercase tracking-wider mb-1.5">Status Kesehatan</p>
+                      {getKondisiBadge(member.kondisi)}
+                    </div>
+
+                    {/* Medical Info */}
+                    <div className="border-t border-slate-50 pt-3 flex flex-col gap-2">
+                      <div>
+                        <p className="text-[10px] text-slate-400 font-bold uppercase tracking-wider mb-1">Riwayat</p>
+                        <p className="text-[10px] font-semibold text-slate-600 bg-slate-50 px-2.5 py-1.5 rounded-lg border border-slate-100 line-clamp-2">
+                          {member.medicalHistory}
+                        </p>
+                      </div>
+                      <div>
+                        <p className="text-[10px] text-slate-400 font-bold uppercase tracking-wider mb-1">Catatan Medis</p>
+                        <p className="text-[10px] text-slate-500 leading-relaxed bg-emerald-50/40 px-2.5 py-1.5 rounded-lg border border-emerald-100/40 line-clamp-2">
+                          {member.medicalNotes}
+                        </p>
+                      </div>
+                    </div>
+
+                    {/* Action Button */}
+                    <div className="flex justify-end pt-2 mt-auto">
+                      <button 
+                        onClick={() => openUpdateModal(member)}
+                        className="flex items-center gap-2 px-3.5 py-2 rounded-lg bg-emerald-50 text-emerald-600 hover:bg-emerald-500 hover:text-white transition-all text-[11px] font-semibold border border-emerald-200 shadow-sm"
+                        title="Update Status Medis"
+                      >
+                        <span className="material-symbols-outlined text-base">edit_note</span>
+                        <span className="hidden sm:inline">Update</span>
+                      </button>
+                    </div>
+                  </div>
+                ))
+              ) : (
+                <div className="col-span-full py-12 text-center bg-white border border-slate-100 rounded-2xl p-8">
+                  <span className="material-symbols-outlined text-slate-300 text-4xl mb-2 block">medical_information</span>
+                  <p className="text-slate-500 text-sm font-medium">Tidak ada anggota yang ditemukan dengan status ini.</p>
+                </div>
+              )}
             </div>
           </div>
         </main>
@@ -511,7 +521,7 @@ export default function KesehatanPage() {
                 
                 {/* Member Profile Banner */}
                 <div className="flex items-center gap-3.5 bg-slate-50 border border-slate-100 rounded-2xl p-4">
-                  <img src={selectedMember.profilePic} alt={selectedMember.name} className="w-12 h-12 rounded-full border-2 border-white shadow-sm object-cover" />
+                  <Image src={selectedMember.profilePic} alt={selectedMember.name} className="w-12 h-12 rounded-full border-2 border-white shadow-sm object-cover" width={48} height={48} unoptimized />
                   <div>
                     <h4 className="font-bold text-sm text-slate-800">{selectedMember.name}</h4>
                     <p className="text-[10px] text-slate-500 font-medium">Riwayat: {selectedMember.medicalHistory}</p>

@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { supabase } from '@/utils/supabaseClient';
 import Navigation from '../../components/Navigation';
 
@@ -414,7 +415,7 @@ export default function InsidenPage() {
 
         {/* Brand / Logo */}
         <div className="px-3 mb-10">
-          <img src="/logo.png" alt="SHE Logo" className="h-12 w-auto object-contain" />
+          <Image src="/logo.png" alt="SHE Logo" width={120} height={48} className="h-12 w-auto object-contain" priority />
         </div>
 
         {/* Navigation Menus - "Insiden" is highlighted */}
@@ -741,15 +742,18 @@ export default function InsidenPage() {
                             {incident.description}
                           </p>
                           {incident.photo && (
-                            <button 
+                              <button 
                               type="button"
                               onClick={() => setSelectedIncidentPhoto(incident.photo)}
                               className="mt-3 overflow-hidden rounded-3xl border border-slate-200 shadow-sm w-full max-w-xs transition hover:shadow-lg"
                             >
-                              <img
+                              <Image
                                 src={incident.photo}
                                 alt="Foto Insiden"
                                 className="w-full h-40 object-cover"
+                                width={320}
+                                height={160}
+                                unoptimized
                               />
                             </button>
                           )}
@@ -784,7 +788,7 @@ export default function InsidenPage() {
                 >
                   <span className="material-symbols-outlined">close</span>
                 </button>
-                <img src={selectedIncidentPhoto} alt="Foto Insiden" className="w-full max-h-[80vh] object-contain bg-slate-900" />
+                <Image src={selectedIncidentPhoto} alt="Foto Insiden" className="w-full max-h-[80vh] object-contain bg-slate-900" width={900} height={600} unoptimized />
               </div>
             </div>
           )}
