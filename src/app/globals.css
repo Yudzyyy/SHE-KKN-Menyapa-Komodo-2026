@@ -5,6 +5,7 @@
   --foreground: #171717;
 }
 
+
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -32,8 +33,7 @@ body {
 
 /* Mencegah Material Symbols muncul sebagai teks sebelum font terbuka */
 .material-symbols-outlined {
-  /* Sembunyikan teks saat font belum loaded, tampil begitu font ready */
-  font-display: swap;
+  font-family: 'Material Symbols Outlined', system-ui, sans-serif;
   /* Pastikan ukuran dan perataan selalu konsisten */
   font-size: inherit;
   line-height: 1;
