@@ -4,7 +4,6 @@ import DashboardClient from './DashboardClient';
 // Tambahkan revalidate untuk ISR (Incremental Static Regeneration)
 // Vercel akan meng-cache halaman ini dan me-regenerate setiap 60 detik di background.
 export const revalidate = 60;
-export const runtime = 'edge';
 
 export default async function Home() {
   let stats = {
